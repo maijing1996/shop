@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaWxMenuMapper">
+
+	<!-- 获取微信菜单信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.WxMenu">
+		SELECT iwm.id, iwm.parent_id, iwm.title, iwm.type, iwm.info, iwm.sequence, iwm.is_show, iwmf.title ftitle
+		FROM idea_wx_menu iwm LEFT JOIN idea_wx_menu iwmf ON iwm.parent_id = iwmf.id
+		WHERE
+			<if test="parentId != null">
+				iwm.parent_id = #{parentId}
+			</if>
+			<if test="parentId == null">
+				iwm.parent_id = 0
+			</if>
+		ORDER BY iwm.sequence ASC
+	</select>
+</mapper>

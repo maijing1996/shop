@@ -1,0 +1,178 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>会员管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>会员等级</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">等级名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="nickName" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">批量删除</button>
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+      </div>
+      
+      <table id="OM-member-level" lay-filter="OM-member-level"></table>
+      <script type="text/html" id="imgTpl"> 
+        <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>
+      </script> 
+      <script type="text/html" id="table-toolbar-level">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('member', layui.factory('member')).use(['admin', 'member', 'table'], function(){
+		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		form.render(null, 'layadmin-userfront-formlist');
+  
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    
+    		//执行重载
+    		table.reload('OM-member-level', {
+      			where: field
+    		});
+  		});
+
+  		//事件
+  		var active = {
+   			batchdel: function(){
+     	 		var checkStatus = table.checkStatus('OM-member-level'),
+				checkData = checkStatus.data; //得到选中的数据
+ 		
+				if(checkData.length === 0){
+					return layer.msg('请选择数据');
+				}
+		
+				//数据封装
+				var val = '';
+				for(var i=0; i < checkData.length; i++) {
+					var obj =checkData[i];
+					val = val + obj.id + ",";
+				}
+				var val = val.substring(0, val.length - 1);
+				var req = {"ids": val};
+			
+				layer.confirm('确定删除吗？', function(index) {
+					layer.close(index);
+		     		//执行 Ajax 后重载
+		     		$.ajax({
+						type: "POST",
+						url: "/manager/level/deletes",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(req),
+						success: function(data){
+							layer.open({
+		             	      	content: data.desc,
+		              	     	btn: ['确认'],
+		              	     	yes: function(index, layero) {
+		                   		layer.close(index);
+		                   		table.reload('OM-member-level', null);
+		                   	}
+		              	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		   			});
+				});
+			},
+    		add: function(){
+    			view('OM-module-temp').render('member/component/level_add', null).done(function(){
+    				//动态加载
+					form.render();
+    				//提交监听
+					form.on('submit(OM-form-submit)', function(data){
+			    		var field = data.field;
+			    		//校验
+			    		if(field.title === '') {
+		      				layer.msg('请填写名称');
+		      				return false;
+		      			}
+			    		
+			    		if(field.rebate == '') {
+			    			layer.msg('请输入折扣');
+		      				return false;
+			    		} else if(field.rebate < 0 || field.rebate > 100){
+			    			layer.msg('请输入正确的折扣');
+		      				return false;
+			    		}
+			    		
+			    		if(field.amount == '') {
+			    			layer.msg('请输入消费金额');
+		      				return false;
+			    		} else if(field.amount < 0){
+			    			layer.msg('请输入正确的消费金额');
+		      				return false;
+			    		}
+
+			    		//提交
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/member/level/insert",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: true,
+							data: JSON.stringify(field),
+							success: function(data){
+								//直接跳转不做任何处理且提示
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/member/level');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+			    		return false;
+			  		});
+    			});
+    		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+   	 		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

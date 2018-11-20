@@ -1,0 +1,151 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>微信设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>基本设置</cite></a>
+  </div>
+</div>
+
+<div class="layui-main layui-form" id="ones">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<div class="layui-tab layui-tab-card" lay-filter="test1">
+				<ul class="layui-tab-title">
+					<li class="layui-this">基本设置</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template lay-url="/manager/wechat/config/info" lay-type="post" lay-done="layui.data.done(d);">
+						<div class="layui-form-item">
+							<label class="layui-form-label">服务器URL：</label>
+							<div class="layui-input-inline" style="width: 350px;">
+								<input type="text" name="service_url" class="layui-input" value="{{d.data.service_url}}" disabled>
+							</div>
+							<div class="layui-form-mid layui-word-aux">公众平台基本配置URL填写此URL</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 公众号名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" datatype="*" nullmsg="公众号名称为空!" placeholder="请输入公众号名称" class="layui-input" value="{{d.data.title}}">
+							</div>
+							<div class="layui-form-mid layui-word-aux">公众平台公众号设置中获取</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> Token：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="token" datatype="*" nullmsg="Token为空!" placeholder="请输入Token" class="layui-input" value="{{d.data.token}}">
+							</div>
+							<div class="layui-form-mid layui-word-aux">公众平台基本配置Token填此设置</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> AppID：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="appid" datatype="*" nullmsg="AppID为空!" placeholder="请输入AppID" class="layui-input" value="{{d.data.appid}}">
+							</div>
+							<div class="layui-form-mid layui-word-aux">公众平台基本配置中获取</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> AppSecret：</label>
+							<div class="layui-input-inline" style="width: 300px;">
+								<input type="text" name="app_secret" datatype="*" nullmsg="AppSecret为空!" placeholder="请输入AppSecret" class="layui-input" value="{{d.data.app_secret}}">
+							</div>
+							<div class="layui-form-mid layui-word-aux">公众平台基本配置中获取</div>
+						</div>
+						<input type="hidden" name="id" value="{{d.data.id}}">
+					</script>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">公众号二维码：</label>
+					    <div class="layui-input-inline">
+        					<input type="text" id="qr_code" name="qr_code" lay-verify="required" class="layui-input">
+					    </div>
+					    <button type="button" class="layui-btn" id="layuiadmin-upload-file">上传图片</button> 
+					    <button class="layui-btn layui-btn-normal" type="button" onclick="layer.open({type: 1,shade: false,title: false, content: $('#pic')});">预览</button>
+					    <script type="text/html" template>
+						    <span style="display:none;" id="pic"><img id="pic2" src="../upload/pic/{{ d.params.qr_code || '' }}"></span>
+						</script>
+					</div>
+					
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-submit">立即提交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	layui.use(['admin', 'form', 'upload'], function(){
+		var $ = layui.$,
+	  	form = layui.form,
+	  	admin = layui.admin,
+	  	upload = layui.upload;
+		
+		//上传头像
+  		upload.render({
+    		elem: '#layuiadmin-upload-file',
+    		url: '/upload',
+    		accept: 'images',
+    		method: 'get',
+    		acceptMime: 'image/*',
+    		done: function(res){
+    			console.log(res);
+      			$(this.item).prev("div").children("input").val(res.url);
+      			$("#pic2").attr("src",res.file);
+      			//动态加载
+    			form.render();
+    		}
+  		});
+		
+		form.render();
+		
+	  	//
+	  	form.on('submit(LAY-user-front-submit)', function(data){
+    		var field = data.field;
+    		console.log(field);
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/wechat/config/update",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(field),
+				success: function(data){
+					layer.open({
+                        content: data.desc,
+                        btn: ['确认'],
+                        yes: function(index, layero) {
+                        	layer.close(index);
+                        }
+                    });
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  		});
+	});
+	
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+	  	layui.use(['form'], function(){
+	  		var $ = layui.$, form = layui.form;
+	  		$("#qr_code").val(d.data.qr_code);
+	     	form.render();
+	  	});
+	};
+</script>
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaTopicMapper">
+
+	<!-- 查询专题信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Topic">
+		SELECT id, cat_id, title, subtitle, source, pic, slide, starting_price, goods_ids, info, url, keywords, description, is_top, is_show, hits, zan, add_date
+		FROM idea_topic
+		<where>
+			<if test="title != null and title != ''">
+				title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 获得小程序的展示专题 -->
+	<select id="getShowTopic" resultType="com.shop.model.po.IdeaTopic">
+		SELECT *
+		FROM idea_topic
+		LIMIT 0, #{size}
+	</select>
+	
+	<!-- 获得专题详情信息 -->
+	<select id="getTopicDetails" resultType="com.shop.model.po.IdeaTopic">
+		SELECT *
+		FROM idea_topic
+		WHERE id=#{id}
+	</select>
+	
+	<!-- 获得所有的专题信息 -->
+	<select id="listInfoByCatId" resultType="com.shop.model.po.IdeaTopic">
+		SELECT it.*
+		FROM idea_topic it INNER JOIN idea_topic_category itc ON itc.id = it.cat_id
+		WHERE itc.parent_id = #{catId} OR it.cat_id = #{catId}
+		ORDER BY it.id DESC
+	</select>
+</mapper>

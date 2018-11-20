@@ -1,0 +1,1629 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商城设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>首页管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid layui-form" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-card-body">
+      	<div class="layui-main">
+			<div class="layui-body-ctr">
+				<form class="layui-ctt">
+						<table class="layui-table">
+							<colgroup>
+								<col width="15%">
+								<col width="8%">
+								<col width="8%">
+								<col width="15%">
+							</colgroup>
+							<thead>
+							<tr>
+								<th>模块名称</th>
+								<th>描述</th>
+								<th>显示</th>
+								<th>操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>Banner</td>
+								<td>首页头部广告轮播图</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" lay-href="shop/advertising">
+								</td>
+							</tr>
+							<tr>
+								<td>专题模块</td>
+								<td>可编辑1组自适应宽度的图片，3个等比例宽度的图片</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_zt">
+								</td>
+							</tr>
+							<tr>
+								<td>人气商品</td>
+								<td>人气商品模块商品管理（系统自动判断人气最高的商品进行展示）</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="标题编辑" id="config_index_hot">
+								</td>
+							</tr>
+							<tr>
+								<td>自定义商品类型</td>
+								<td>可添加某一商品分类至本模块进行展示（建议添加最少1个分类）</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_index_goods_type">
+								</td>
+							</tr>
+							<tr>
+								<td>猜你喜欢</td>
+								<td>猜你喜欢模块商品管理</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<td>文章模块</td>
+								<td>建议添加4个以上（包含4个）</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_article">
+								</td>
+							</tr>
+							<tr>
+								<td>XX模块</td>
+								<td>3个模块，左侧小模块能编辑标题，能编辑图片；右侧两个小模块选择商品类型；固定三个模块，不能添加。</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_xx">
+								</td>
+							</tr>
+							<tr>
+								<td>地址管理</td>
+								<td>首页尾部地址管理</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_address">
+								</td>
+							</tr>
+							<tr>
+								<td>新人领取优惠券主图设置</td>
+								<td>主图设置</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_coupon_pic_1">
+								</td>
+							</tr>
+							<tr>
+								<td>新人领取优惠券副图设置</td>
+								<td>副图设置</td>
+								<td><span class="yes_span"><i class="iconfont">&#xe63c;</i> 是</span></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_coupon_pic_2">
+								</td>
+							</tr>
+							<tr>
+								<td>分享图片1</td>
+								<td>图片配置</td>
+								<td></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_share_pic_1">
+								</td>
+							</tr>
+							<tr>
+								<td>分享图片2</td>
+								<td>图片配置</td>
+								<td></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_share_pic_2">
+								</td>
+							</tr>
+							<tr>
+								<td>分享图片3</td>
+								<td>图片配置</td>
+								<td></td>
+								<td>
+									<input type="button" class="layui-btn layui-btn-small layui-btn-normal" value="编辑" id="config_share_pic_3">
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+				<div class="layui-ctt" id="page"></div>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('order', layui.factory('order')).use(['admin', 'order', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+
+  		//事件监听
+  		//专题模块
+  		$('#config_zt').on('click', function(){
+  			var all_data = '';
+  			var req = {"type": 1};
+  			//初始化
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/home/page/index",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(req),
+				success: function(data){
+					if(data != '0') {
+						all_data = data;
+					}
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_zt', all_data).done(function() {
+  				//动态加载
+				form.render();
+				//监听提交
+				form.on('submit(OM-form-submit-edit)', function(data){
+					var id = $(this).data('type');
+					var val = {"id": id};
+					var data5 = '';
+					//初始化
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/index/id",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(val),
+						success: function(data){
+							data5 = data;
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		//视图
+		  			view('OM-module-temp').render('shop/home/edit_zt', data5).done(function() {
+		  				
+		  				if(data5.result.pic_type == 1) {
+		  					$("#sel").append("<option value='1' selected>自适应宽度模块（750*250）</option>"
+			  						+"<option value='2'>等比宽度模块（250*250）</option>");
+		  				} else {
+		  					$("#sel").append("<option value='1'>自适应宽度模块（750*250）</option>"
+			  						+"<option value='2' selected>等比宽度模块（250*250）</option>");
+		  				}
+		  				//动态加载
+						form.render();
+						
+						//提交监听
+						form.on('submit(OM-form-submit)', function(data){
+				    		var field = data.field;
+				    		//提交
+				    		$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/update",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+				  		});
+		  			});
+				});
+				
+				//
+				form.on('submit(OM-form-submit-del)', function(data){
+					layer.confirm('确定删除此信息？', function(index){
+						layer.close(index);
+						
+						var id = $(this).data('type');
+						var val = {"id": id};
+						//初始化
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/home/page/index/delete",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(val),
+							success: function(data){
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+					});
+				});
+				//添加
+				$('#create_zt').on('click', function(){
+					//视图
+		  			view('OM-module-temp').render('shop/home/create_zt', null).done(function() {
+		  				//动态加载
+						form.render();
+						//提交监听
+						form.on('submit(OM-form-submit)', function(data){
+				    		var field = data.field;
+				    		//提交
+				    		$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/insert",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+				  		});
+		  			});
+				});
+  			});
+  		});
+  		
+  		
+  		//人气商品
+  		$('#config_index_hot').on('click', function(){
+  			var all_data = '';
+  			var req = {"type": 5};
+  			//初始化
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/home/page/index",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(req),
+				success: function(data){
+					all_data = data[0];
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_index_hot', all_data).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-index-hot)', function(data){
+		    		var field = data.field;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page//index/update",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+  		
+  		//自定义商品类型
+  		$('#config_index_goods_type').on('click', function(){
+  			var all_data = '';
+  			var req = {"type": 2};
+  			//初始化
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/home/page/index",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(req),
+				success: function(data){
+					all_data = data;
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_index_goods_type', all_data).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				$('#add_goods').on('click', function(){
+					//视图
+		  			view('OM-module-temp').render('shop/home/create_good_type', null).done(function() {
+		  				console.log(JSON.stringify(all_data));
+		  				var vv = {"cat_id":0, "page":1,"size":1000};
+						var vv2 = {"parent_id":0, "page":1,"size":1000};
+						var vv3 = '';
+						var vv4 = '';
+						//初始化
+						$.ajax({
+			    			type: "POST",
+							url: "/manager/goods/categroy/info",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(vv),
+							success: function(data){
+								var list = data.data;
+								if(list != null && list.length > 0) {
+									for(var i=0; i < list.length; i++) {
+										var obj = list[i];
+										$("#v1").append("<option value="+obj.id+">"+obj.title+"</option>");
+									}
+									vv3 = list[0].id;
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+						$.ajax({
+			    			type: "POST",
+							url: "/manager/goods/person/info",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(vv2),
+							success: function(data){
+								var list = data.data;
+								if(list != null && list.length > 0) {
+									for(var i=0; i < list.length; i++) {
+										var obj = list[i];
+										$("#v2").append("<option value="+obj.id+">"+obj.title+"</option>");
+									}
+									vv4 = list[0].id;
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+						$(".c1").css("display","none");
+			    		$(".c2").css("display","none");
+			    		$(".c3").css("display","none");
+		  				//动态加载
+						form.render();
+						
+						//事件监听
+						form.on('select(bigC)',function (datas) {
+					    	if(datas.value == 1) {
+					    		$(".c1").css("display","block");
+					    		$(".c2").css("display","none");
+					    		
+					    		//获得基础数据
+					    		$("#c3").empty();
+								$(".c3").css("display","none");
+								$.ajax({
+					    			type: "POST",
+									url: "/manager/goods/article/categroy",
+									dataType:'json',//预期服务器返回的数据类型
+									contentType: "application/json; charset=utf-8",
+									async: false,
+									data: JSON.stringify({"cat_id":vv3}),
+									success: function(data){
+										var list = data;
+										if(list != null && list.length > 0) {
+											$(".c3").css("display","block");
+											htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+											for(var i=0; i < list.length; i++) {
+												var obj = list[i];
+												if(obj.is_index == 0) {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+												} else {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+												}
+												if((i+1)%8 == 0) {
+													htmlStr = htmlStr + "</label><br><label for=''>";
+												}
+											}
+											htmlStr = htmlStr + "</label><br>";
+											$("#c3").append(htmlStr);
+										}
+									}, error: function(){
+										location.hash='/system/404';
+									}
+					    		});
+					    	} else if(datas.value == 2) {
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","block");
+					    		
+					    		//获得基础数据
+					    		$("#c3").empty();
+								$(".c3").css("display","none");
+								var htmlStr = '';
+								$.ajax({
+					    			type: "POST",
+									url: "/manager/goods/article/person",
+									dataType:'json',//预期服务器返回的数据类型
+									contentType: "application/json; charset=utf-8",
+									async: false,
+									data: JSON.stringify({"person_id":vv4}),
+									success: function(data){
+										var list = data;
+										if(list != null && list.length > 0) {
+											$(".c3").css("display","block");
+											htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+											for(var i=0; i < list.length; i++) {
+												var obj = list[i];
+												if(obj.is_index == 0) {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+												} else {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+												}
+												if((i+1)%8 == 0) {
+													htmlStr = htmlStr + "</label><br><label for=''>";
+												}
+											}
+											htmlStr = htmlStr + "</label><br>";
+											$("#c3").append(htmlStr);
+										}
+									}, error: function(){
+										location.hash='/system/404';
+									}
+					    		});
+					    	} else {
+					    		$("#c3").empty();
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","none");
+					    		$(".c3").css("display","none");
+					    	}
+					    	//动态加载
+					    	form.render();
+					    });
+						
+						form.on('select(v1)',function (datas) {
+							$("#c3").empty();
+							$(".c3").css("display","none");
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/goods/article/categroy",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify({"cat_id":datas.value}),
+								success: function(data){
+									var list = data;
+									if(list != null && list.length > 0) {
+										$(".c3").css("display","block");
+										htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+										for(var i=0; i < list.length; i++) {
+											var obj = list[i];
+											if(obj.is_index == 0) {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+											} else {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+											}
+											if((i+1)%8 == 0) {
+												htmlStr = htmlStr + "</label><br><label for=''>";
+											}
+										}
+										htmlStr = htmlStr + "</label><br>";
+										$("#c3").append(htmlStr);
+									}
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+							
+					    	//动态加载
+					    	form.render();
+					    });
+						
+						form.on('select(v2)',function (datas) {
+							$("#c3").empty();
+							$(".c3").css("display","none");
+							var htmlStr = '';
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/goods/article/person",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify({"person_id":datas.value}),
+								success: function(data){
+									var list = data;
+									if(list != null && list.length > 0) {
+										$(".c3").css("display","block");
+										htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+										for(var i=0; i < list.length; i++) {
+											var obj = list[i];
+											if(obj.is_index == 0) {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+											} else {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+											}
+											if((i+1)%8 == 0) {
+												htmlStr = htmlStr + "</label><br><label for=''>";
+											}
+										}
+										htmlStr = htmlStr + "</label><br>";
+										$("#c3").append(htmlStr);
+									}
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+					    	//动态加载
+					    	form.render();
+					    });
+						
+						//提交监听
+						form.on('submit(OM-form-submit)', function(data){
+				    		var field = data.field;
+				    		
+				    		if(field.b_type == 1) {
+				    			field.value=field.value1;
+				    		} else if(field.b_type == 2) {
+				    			field.value=field.value2;
+				    		}
+				    		
+				    		var goodsList=new Array();
+				    		goodsList=$('input[name="goodsIds"]:checked').map(function(){ return $(this).val(); }).get();
+		   		    		field.goodsIdss = goodsList.join(",");
+				    		
+				    		//提交
+				    		$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/insert",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+				  		});
+		  			});
+				});
+				//
+				form.on('submit(OM-form-submit-edit)', function(data){
+					var id = $(this).data('type');
+					var val = {"id": id};
+					var data5 = '';
+					//初始化
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/index/id",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(val),
+						success: function(data){
+							data5 = data;
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		//视图
+		  			view('OM-module-temp').render('shop/home/config_goods_type_edit', data5).done(function() {
+		  				var vv = {"parent_id":0, "page":1,"size":1000};
+						var vv2 = {"parent_id":0, "page":1,"size":1000};
+						var vv3 = '';
+						var vv4 = '';
+						//初始化
+						$.ajax({
+			    			type: "POST",
+							url: "/manager/goods/categroy/info",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(vv),
+							success: function(data){
+								var list = data.data;
+								if(list != null && list.length > 0) {
+									for(var i=0; i < list.length; i++) {
+										var obj = list[i];
+										$("#v1").append("<option value="+obj.id+">"+obj.title+"</option>");
+									}
+									vv3 = list[0].id;
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+						$.ajax({
+			    			type: "POST",
+							url: "/manager/goods/person/info",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(vv2),
+							success: function(data){
+								var list = data.data;
+								if(list != null && list.length > 0) {
+									for(var i=0; i < list.length; i++) {
+										var obj = list[i];
+										$("#v2").append("<option value="+obj.id+">"+obj.title+"</option>");
+									}
+									vv4 = list[0].id;
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+						if(data5.result.b_type == 1) {
+							$("#bigC").append("<option value=''>请选择大类</option>"
+									+"<option value='1' selected>商品分类</option>"
+									+"<option value='2'>人群分类</option>");
+				    		$(".c1").css("display","block");
+				    		$(".c2").css("display","none");
+				    		
+				    		//获得基础数据
+				    		$("#c3").empty();
+							$(".c3").css("display","none");
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/goods/article/categroy",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify({"cat_id":vv3}),
+								success: function(data){
+									var list = data;
+									if(list != null && list.length > 0) {
+										$(".c3").css("display","block");
+										htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+										for(var i=0; i < list.length; i++) {
+											var obj = list[i];
+											if(obj.is_index == 0) {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+											} else {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+											}
+											if((i+1)%8 == 0) {
+												htmlStr = htmlStr + "</label><br><label for=''>";
+											}
+										}
+										htmlStr = htmlStr + "</label><br>";
+										$("#c3").append(htmlStr);
+									}
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    	} else if(data5.result.b_type == 2) {
+				    		$("#bigC").append("<option value=''>请选择大类</option>"
+									+"<option value='1'>商品分类</option>"
+									+"<option value='2' selected>人群分类</option>");
+				    		$(".c1").css("display","none");
+				    		$(".c2").css("display","block");
+				    		
+				    		//获得基础数据
+				    		$("#c3").empty();
+							$(".c3").css("display","none");
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/goods/article/categroy",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify({"cat_id":vv3}),
+								success: function(data){
+									var list = data;
+									if(list != null && list.length > 0) {
+										$(".c3").css("display","block");
+										htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+										for(var i=0; i < list.length; i++) {
+											var obj = list[i];
+											if(obj.is_index == 0) {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+											} else {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+											}
+											if((i+1)%8 == 0) {
+												htmlStr = htmlStr + "</label><br><label for=''>";
+											}
+										}
+										htmlStr = htmlStr + "</label><br>";
+										$("#c3").append(htmlStr);
+									}
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    	} else {
+				    		$("#bigC").append("<option value='' selected>请选择大类</option>"
+									+"<option value='1'>商品分类</option>"
+									+"<option value='2'>人群分类</option>");
+				    		$("#c3").empty();
+				    		$(".c1").css("display","none");
+				    		$(".c2").css("display","none");
+							$(".c3").css("display","none");
+				    	}
+		  				//动态加载
+						form.render();
+		  				
+						//事件监听
+						form.on('select(bigC)',function (datas) {
+					    	if(datas.value == 1) {
+					    		$(".c1").css("display","block");
+					    		$(".c2").css("display","none");
+					    		
+					    		//获得基础数据
+					    		$("#c3").empty();
+								$(".c3").css("display","none");
+								$.ajax({
+					    			type: "POST",
+									url: "/manager/goods/article/categroy",
+									dataType:'json',//预期服务器返回的数据类型
+									contentType: "application/json; charset=utf-8",
+									async: false,
+									data: JSON.stringify({"cat_id":vv3}),
+									success: function(data){
+										var list = data;
+										if(list != null && list.length > 0) {
+											$(".c3").css("display","block");
+											htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+											for(var i=0; i < list.length; i++) {
+												var obj = list[i];
+												if(obj.is_index == 0) {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+												} else {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+												}
+												if((i+1)%8 == 0) {
+													htmlStr = htmlStr + "</label><br><label for=''>";
+												}
+											}
+											htmlStr = htmlStr + "</label><br>";
+											$("#c3").append(htmlStr);
+										}
+									}, error: function(){
+										location.hash='/system/404';
+									}
+					    		});
+					    	} else if(datas.value == 2) {
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","block");
+					    		
+					    		//获得基础数据
+					    		$("#c3").empty();
+								$(".c3").css("display","none");
+								var htmlStr = '';
+								$.ajax({
+					    			type: "POST",
+									url: "/manager/goods/article/person",
+									dataType:'json',//预期服务器返回的数据类型
+									contentType: "application/json; charset=utf-8",
+									async: false,
+									data: JSON.stringify({"person_id":vv4}),
+									success: function(data){
+										var list = data;
+										if(list != null && list.length > 0) {
+											$(".c3").css("display","block");
+											htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+											for(var i=0; i < list.length; i++) {
+												var obj = list[i];
+												if(obj.is_index == 0) {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+												} else {
+													htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+												}
+												if((i+1)%8 == 0) {
+													htmlStr = htmlStr + "</label><br><label for=''>";
+												}
+											}
+											htmlStr = htmlStr + "</label><br>";
+											$("#c3").append(htmlStr);
+										}
+									}, error: function(){
+										location.hash='/system/404';
+									}
+					    		});
+					    	} else {
+					    		$("#c3").empty();
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","none");
+					    		$(".c3").css("display","none");
+					    	}
+					    	//动态加载
+					    	form.render();
+					    });
+		  				
+						form.on('select(v1)',function (datas) {
+							$("#c3").empty();
+							$(".c3").css("display","none");
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/goods/article/categroy",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify({"cat_id":datas.value}),
+								success: function(data){
+									var list = data;
+									if(list != null && list.length > 0) {
+										$(".c3").css("display","block");
+										htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+										for(var i=0; i < list.length; i++) {
+											var obj = list[i];
+											if(obj.is_index == 0) {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+											} else {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+											}
+											if((i+1)%8 == 0) {
+												htmlStr = htmlStr + "</label><br><label for=''>";
+											}
+										}
+										htmlStr = htmlStr + "</label><br>";
+										$("#c3").append(htmlStr);
+									}
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+							
+					    	//动态加载
+					    	form.render();
+					    });
+						
+						form.on('select(v2)',function (datas) {
+							$("#c3").empty();
+							$(".c3").css("display","none");
+							var htmlStr = '';
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/goods/article/person",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify({"person_id":datas.value}),
+								success: function(data){
+									var list = data;
+									if(list != null && list.length > 0) {
+										$(".c3").css("display","block");
+										htmlStr = "<label class='layui-form-label'><span>*</span> 选择商品：</label><br><br><label for=''>";
+										for(var i=0; i < list.length; i++) {
+											var obj = list[i];
+											if(obj.is_index == 0) {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+">"+obj.title;
+											} else {
+												htmlStr = htmlStr + "<input name='goodsIds' type='checkbox' value="+obj.id+" checked>"+obj.title;
+											}
+											if((i+1)%8 == 0) {
+												htmlStr = htmlStr + "</label><br><label for=''>";
+											}
+										}
+										htmlStr = htmlStr + "</label><br>";
+										$("#c3").append(htmlStr);
+									}
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+					    	//动态加载
+					    	form.render();
+					    });
+						
+						//提交监听
+						form.on('submit(OM-form-submit)', function(data){
+				    		var field = data.field;
+				    		
+				    		if(field.b_type == 1) {
+				    			field.value=field.value1;
+				    		} else if(field.b_type == 2) {
+				    			field.value=field.value2;
+				    		}
+				    		
+				    		var goodsList=new Array();
+				    		goodsList=$('input[name="goodsIds"]:checked').map(function(){ return $(this).val(); }).get();
+		   		    		field.goodsIdss = goodsList.join(",");
+
+		   		    		//提交
+				    		$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/update",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+				  		});
+		  			});
+				});
+				//
+				form.on('submit(OM-form-submit-del)', function(data){
+					var id = $(this).data('type');
+					layer.confirm('确定删除此信息？', function(index){
+						layer.close(index);
+						
+						var val = {"id": id};
+						//初始化
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/home/page/index/delete",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(val),
+							success: function(data){
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+					});
+				});
+  			});
+  		});
+  		
+  		//文章模块
+  		$('#config_article').on('click', function(){
+  			var all_data = '';
+  			var req = {"type": 3};
+  			//初始化
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/home/page/index",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(req),
+				success: function(data){
+					all_data = data;
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_article', all_data).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit_del)', function(){
+					var id = $(this).data('type');
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/index/delete",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+				//
+				form.on('submit(OM-form-submit_edit)', function(data){
+					var id = $(this).data('type');
+					var val = {"id":id};
+					var data5 = '';
+					//初始化
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/index/id",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(val),
+						success: function(data){
+							data5 = data;
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		//视图
+		  			view('OM-module-temp').render('shop/home/config_article_edit', data5.result).done(function() {
+		  				//动态加载
+						form.render();
+						//提交
+						form.on('submit(OM-form-submit)', function(data){
+							var field = data.field;
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/update",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+						});
+		  			});
+		  		});
+				
+				//监听
+				$('#create_article').on('click', function(){
+		    		//视图
+		  			view('OM-module-temp').render('shop/home/create_article', null).done(function() {
+		  				//动态加载
+						form.render();
+						//提交
+						form.on('submit(OM-form-submit)', function(data){
+							var field = data.field;
+							$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/insert",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+						});
+		  			});
+				});
+  			});
+  		});
+  		
+  		//XX模块
+  		$('#config_xx').on('click', function(){
+  			var all_data = '';
+  			var req = {"type": 4};
+  			//初始化
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/home/page/index",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(req),
+				success: function(data){
+					all_data = data;
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_xx', all_data).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-edit)', function(data){
+					var id = $(this).data('type');
+					var data2 = '';
+					for(var i=0; i < all_data.length; i++) {
+						var obj = all_data[i];
+						if(obj.id == id){
+							data2 = obj;
+						}
+					}
+					//视图
+		  			view('OM-module-temp').render('shop/home/config_xx_edit', data2).done(function() {
+		  				var vv = {"parent_id":0, "page":1,"size":1000};
+						var vv2 = {"parent_id":0, "page":1,"size":1000};console.log(JSON.stringify(data2));
+						//初始化
+						$.ajax({
+			    			type: "POST",
+							url: "/manager/goods/categroy/info",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(vv),
+							success: function(data){
+								var list = data.data;
+								for(var i=0; i < list.length; i++) {
+									var obj = list[i];
+									$("#v1").append("<option value="+obj.id+">"+obj.title+"</option>");
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+						$.ajax({
+			    			type: "POST",
+							url: "/manager/goods/person/info",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(vv2),
+							success: function(data){
+								var list = data.data;
+								for(var i=0; i < list.length; i++) {
+									var obj = list[i];
+									$("#v2").append("<option value="+obj.id+">"+obj.title+"</option>");
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+						
+						//初始化
+						if(data2.id != 10) {
+							$(".c3").css("display","none");
+							if(data2.b_type == 1) {
+								$("#bigC").append("<option value='0'>请选择大类</option>"
+										+"<option value='1' selected>商品分类</option>"
+										+"<option value='2'>人群分类</option>");
+					    		$(".c1").css("display","block");
+					    		$(".c2").css("display","none");
+					    	} else if(data2.b_type == 2) {
+					    		$("#bigC").append("<option value='0'>请选择大类</option>"
+										+"<option value='1'>商品分类</option>"
+										+"<option value='2' selected>人群分类</option>");
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","block");
+					    	} else {
+					    		$("#bigC").append("<option value='0' selected>请选择大类</option>"
+										+"<option value='1'>商品分类</option>"
+										+"<option value='2'>人群分类</option>");
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","none");
+					    	}
+						} else {
+							$(".c1").css("display","none");
+				    		$(".c2").css("display","none");
+				    		$(".c3").css("display","block");
+				    		$(".c4").css("display","none");
+						}
+						
+		  				//动态加载
+						form.render();
+						//事件监听
+						form.on('select(bigC)',function (datas) {
+					    	if(datas.value == 1) {
+					    		$(".c1").css("display","block");
+					    		$(".c2").css("display","none");
+					    	} else if(datas.value == 2) {
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","block");
+					    	} else {
+					    		$(".c1").css("display","none");
+					    		$(".c2").css("display","none");
+					    	}
+					    	//动态加载
+					    	form.render();
+					    });
+						
+						//提交监听
+						form.on('submit(OM-form-submit)', function(data){
+				    		var field = data.field;
+				    		
+				    		if(field.id != 10) {
+				    			if(field.b_type == 1) {
+				    				field.value=field.value1;
+					    		} else if(field.b_type == 2) {
+					    			field.value=field.value2;
+					    		}
+				    		}
+				    		
+				    		//提交
+				    		$.ajax({
+				    			type: "POST",
+								url: "/manager/home/page/index/update",
+								dataType:'json',//预期服务器返回的数据类型
+								contentType: "application/json; charset=utf-8",
+								async: false,
+								data: JSON.stringify(field),
+								success: function(data){
+									//直接跳转不做任何处理且提示
+									layer.open({
+			                  	      	content: data.desc,
+			                   	     	btn: ['确认'],
+			                   	     	yes: function(index, layero) {
+			                        		layer.close(index);
+			                        		//刷新当前页面
+			        			    		window.location.reload();
+			        			    		//修改路径，防止由于url 问题无法跳转的情况
+			        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+			                        	}
+			                   	 	});
+								}, error: function(){
+									location.hash='/system/404';
+								}
+				    		});
+				    		return false;
+				  		});
+		  			});
+		  		});
+  			});
+  		});
+  		
+  		//地址管理
+  		$('#config_address').on('click', function(){
+  			var all_data = '';
+  			var req = {"type":1};
+  			//初始化
+    		$.ajax({
+    			type: "POST",
+				url: "/manager/home/page/config",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: false,
+				data: JSON.stringify(req),
+				success: function(data){
+					all_data = data;
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_address', all_data).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit)', function(data){
+		    		var field = data.field;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/config/address",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+  		
+  		
+  		//新人领取优惠券主图设置
+  		$('#config_coupon_pic_1').on('click', function(){
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_coupon_pic', null).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit)', function(data){
+		    		var field = data.field;
+		    		field.id=3;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/config/update",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+  		
+  		
+  		//新人领取优惠券副图设置
+  		$('#config_coupon_pic_2').on('click', function(){
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_coupon_pic_2', null).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit)', function(data){
+		    		var field = data.field;
+		    		field.id=4;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/config/update",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+  		
+  		
+  		//分享图片1
+  		$('#config_share_pic_1').on('click', function(){
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_share_pic_1', null).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit)', function(data){
+		    		var field = data.field;
+		    		field.id=5;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/config/update",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+  		
+  		//分享图片2
+  		$('#config_share_pic_2').on('click', function(){
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_share_pic_2', null).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit)', function(data){
+		    		var field = data.field;
+		    		field.id=6;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/config/update",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+  		
+  		
+  		//分享图片3
+  		$('#config_share_pic_3').on('click', function(){
+  			//视图
+  			view('OM-module-temp').render('shop/home/config_share_pic_3', null).done(function() {
+  				//动态加载
+				form.render();
+				//提交监听
+				form.on('submit(OM-form-submit)', function(data){
+		    		var field = data.field;
+		    		field.id=7;
+		    		//提交
+		    		$.ajax({
+		    			type: "POST",
+						url: "/manager/home/page/config/update",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(field),
+						success: function(data){
+							//直接跳转不做任何处理且提示
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		//刷新当前页面
+	        			    		window.location.reload();
+	        			    		//修改路径，防止由于url 问题无法跳转的情况
+	        	    				window.history.pushState(null, null, '/start/index.html#/shop/home-page');
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+		    		return false;
+		  		});
+  			});
+  		});
+	});
+</script>
+
+

@@ -1,0 +1,26 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>销售管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>销售排行</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">  
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px; font-size: 20px;">
+      	销售排行
+      </div>
+      <table id="OM-sell-rangking" lay-filter="OM-sell-rangking"></table>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('sell', layui.factory('sell')).use(['sell'], function(){});
+</script>

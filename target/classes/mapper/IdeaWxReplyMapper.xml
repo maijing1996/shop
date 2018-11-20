@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaWxReplyMapper">
+
+	<!-- 获得微信关键字回复列表信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.WxReply">
+		SELECT id, title, trigger_type, reply_type, keyword, info, mater_id
+		FROM idea_wx_reply
+		ORDER BY id DESC
+	</select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaFlashSaleMapper">
+
+	<!-- 获取限时抢购的信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.FlashSale">
+		SELECT ifs.id, ifs.title, ifs.goods_id, ifs.price, ifs.amount, ifs.per_amount, ifs.sales, ifs.sale_bdate,
+			ifs.sale_edate, ifs.sequence, ig.title goods_name, ifs.spec_name
+		FROM idea_flash_sale ifs INNER JOIN idea_goods ig ON ifs.goods_id = ig.id
+		<where>
+			<if test="title != null and title != ''">
+				ifs.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+		ORDER BY ifs.sequence DESC, ifs.id DESC
+	</select>
+</mapper>

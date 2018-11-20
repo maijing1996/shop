@@ -1,0 +1,50 @@
+
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<form class="layui-ctt">
+			<table class="layui-table">
+				<colgroup>
+					<col width="15%">
+					<col width="8%">
+					<col width="8%">
+					<col width="5%">
+				</colgroup>
+				<thead>
+				<tr>
+					<th>模块名称</th>
+					<th>图片</th>
+					<th>跳转</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<script type="text/html" template>
+					{{# layui.each(d.params, function(index, item){ }}
+					<tr>
+						<td>{{ item.title || '' }}</td>
+						<td>{{ item.pic || '' }}</td>
+						<td>
+							{{# if(item.jump_type == 1) { }}
+								链接：{{ item.url || '' }}
+							{{# } else if(item.jump_type == 2) { }}
+								{{ item.value || '' }}
+							{{# } else { }}
+								未设置
+							{{# } }}
+						</td>
+						<td>
+							<button class="layui-btn" lay-submit lay-filter="OM-form-edit" data-type={{ item.id || '' }}>编辑</button>
+						</td>
+					</tr>
+					{{# }); }}
+				</script>
+				</tbody>
+			</table>
+		</form>
+		<div class="layui-ctt" id="page"></div>
+	</div>
+</div>
+	
+	
+	

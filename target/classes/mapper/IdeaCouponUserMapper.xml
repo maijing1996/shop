@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaCouponUserMapper">
+
+	<!-- 查看优惠券领取使用情况 -->
+	<select id="listInfo" resultType="com.shop.model.dto.CouponUser">
+		SELECT icu.id, icu.coupon_sn, icu.is_use, icu.use_date, icu.order_sn, iu.oauth_nickname nickname
+		FROM idea_coupon_user icu INNER JOIN idea_user iu ON icu.user_id = iu.id
+		WHERE icu.is_delete = 0 AND icu.coupon_id = #{coupon_id}
+		ORDER BY icu.id DESC
+	</select>
+</mapper>

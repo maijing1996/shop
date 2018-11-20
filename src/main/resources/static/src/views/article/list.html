@@ -1,0 +1,259 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>文章管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>文章列表</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">文章标题</label>
+          <div class="layui-input-block">
+            <input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">所属类型</label>
+          <div class="layui-input-block">
+            <select name="cat_id" id="m_cat_id_1"></select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add"><i class="layui-icon layui-icon-add-circle"></i>添加文章</button>
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+      </div>
+      
+      <table id="OM-article-details" lay-filter="OM-article-details"></table>
+      <script type="text/html" id="imgTpl"> 
+        <img style="display: inline-block; width: 50%; height: 100%;" src= "../upload/pic/{{ d.pic }}">
+      </script> 
+      <script type="text/html" id="table-article-details">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('article', layui.factory('article')).use(['admin', 'article', 'table', 'layedit'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		layedit = layui.layedit,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		//初始化
+  		$("#m_cat_id_1").append("<option value=''>所有</option>");
+  		$.ajax({
+			type: "POST",
+			url: "/manager/article/details/info/all",
+			dataType:'json',//预期服务器返回的数据类型
+			contentType: "application/json; charset=utf-8",
+			async: false,
+			data: JSON.stringify({}),
+			success: function(data){
+				var fid = 0;
+				for(var i=0; i < data.data.length; i++) {
+					var obj = data.data[i];
+					if(fid == 0 || obj.id != fid) {
+						$('#m_cat_id_1').append("<option value="+obj.id+">"+obj.title+"</option>");
+						fid = obj.id;
+					} else {
+						$('#m_cat_id_1').append("<option value="+obj.sid+"> └ "+obj.stitle+"</option>");
+					}
+				}
+			}, error: function(){
+				location.hash='/system/404';
+			}
+		});
+  		form.render(null, 'layadmin-userfront-formlist');
+  
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    
+    		//执行重载
+    		table.reload('OM-article-details', {
+     	 		where: field
+    		});
+  		});
+
+  		//事件
+  		var active = {
+			batchdel: function(){
+      			var checkStatus = table.checkStatus('OM-article-details'),
+      			checkData = checkStatus.data; //得到选中的数据
+      			if(checkData.length === 0){
+        			return layer.msg('请选择数据');
+      			}
+
+      			//数据封装
+      			var val = '';
+      			for(var i=0; i < checkData.length; i++) {
+      				var obj =checkData[i];
+      				val = val + obj.id + ",";
+      			}
+      			var val = val.substring(0, val.length - 1);
+      			var req = {"ids": val};
+      			layer.confirm('确定删除吗？', function(index) {
+        			layer.close(index);
+	          		//执行 Ajax 后重载
+	          		$.ajax({
+						type: "POST",
+						url: "/manager/article/details/deletes",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(req),
+						success: function(data){
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		table.reload('OM-article-details', null);
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+        		});
+      		},
+      		add: function() {
+      			view('OM-module-temp').render('article/component/article-add', null).done(function(){
+      				
+      				//初始化
+      		  		$("#m_catId").append("<option value=''>请选择所属分类</option>");
+      		  		$.ajax({
+      					type: "POST",
+      					url: "/manager/article/details/info/all",
+      					dataType:'json',//预期服务器返回的数据类型
+      					contentType: "application/json; charset=utf-8",
+      					async: false,
+      					data: JSON.stringify({}),
+      					success: function(data){
+      						var fid = 0;
+    						for(var i=0; i < data.data.length; i++) {
+    							var obj = data.data[i];
+    							if(fid == 0 || obj.id != fid) {
+    								$('#m_catId').append("<option value="+obj.id+">"+obj.title+"</option>");
+    								fid = obj.id;
+    							} else {
+    								$('#m_catId').append("<option value="+obj.sid+"> └ "+obj.stitle+"</option>");
+    							}
+    						}
+      					}, error: function(){
+      						location.hash='/system/404';
+      					}
+      				});
+      				//富文本框
+      				/* layedit.set({
+      				  	uploadImage: {
+      				    	url: '/editor/upload', //接口url
+      				    	type: 'post' //默认post
+      				  	}
+      				});
+      				//富文本框初始化
+				  	var layedit_index = layedit.build('editor'); //建立编辑器 */
+      				//加载页面
+    				form.render();
+    				//提交监听
+					form.on('submit(OM-form-submit)', function(data){
+			    		var field = data.field;
+			    		//校验
+			    		if(field.title === '') {
+		      				layer.msg('请填写名称');
+		      				return false;
+		      			}
+			    		
+			    		if(field.sequence == '') {
+			    			layer.msg('请输入排序');
+		      				return false;
+			    		} else if(field.sequence < 1){
+			    			layer.msg('请输入正确的排序');
+		      				return false;
+			    		}
+
+			    		if(field.is_jp === 'on') {
+			    			field.is_jp = 1;
+			    		} else {
+			    			field.is_jp = 0;
+			    		}
+			    		
+			    		if(field.is_show === 'on') {
+			    			field.is_show = 1;
+			    		} else {
+			    			field.is_show = 0;
+			    		}
+			    		
+			    		if(field.sequence < 0){
+			    			layer.msg('排序输入有误');
+			    			return false;
+			    		}
+			    		
+			    		if(field.zan < 0){
+			    			layer.msg('点赞输入有误');
+			    			return false;
+			    		}
+			    		
+			    		if(field.hits < 0){
+			    			layer.msg('人气输入有误');
+			    			return false;
+			    		}
+			    		//field.info = JSON.stringify(layedit.getContent(layedit_index));
+			    		
+			    		//提交
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/article/details/insert",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(field),
+							success: function(data){
+								//直接跳转不做任何处理且提示
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+			    		return false;
+			  		});
+    			});
+      		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

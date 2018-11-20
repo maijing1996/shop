@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaDistributionCategroyVoucherMapper">
+
+	<!-- 删除上级分销商名下的所有分销员 -->
+	<delete id="deleteByParentId">
+		DELETE FROM idea_distribution_categroy_voucher
+		WHERE cid = #{parentId}
+	</delete>
+</mapper>

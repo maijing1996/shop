@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaShopTransactionMapper">
+	
+	<!-- 获得交易设置 -->
+	<select id="getInfo" resultType="com.shop.model.po.IdeaShopTransaction">
+		SELECT id, full_cut, unpaid, shipments, stock_reduce_time, integral_exchange, integral_exchange_proportion, use_ratio_integral, mini_integral
+		FROM idea_shop_transaction
+		LIMIT 0,1
+	</select>
+</mapper>

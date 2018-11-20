@@ -1,0 +1,26 @@
+
+
+<div class="m_ctr" style="padding-top: 15px;">
+	<form class="layui-form">
+		<div class="layui-form-item">
+			<label class="layui-form-label">订单运费：</label>
+			<div class="layui-input-inline">
+				<input type="text" name="price" datatype="num" nullmsg="请输入运费!" placeholder="请输入运费" value="0.00" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">价格微调：</label>
+			<div class="layui-input-inline" style="width: 100px;">
+				<input type="text" name="trim_price" datatype="num" nullmsg="请输入微调价格!" errormsg="价格不为数字!" value="0.00" class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">正数表示增加，负数表示减少</div>
+		</div>
+		<div class="layui-form-item" style="border: 0;">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="OM-money-submit">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+</div>
+

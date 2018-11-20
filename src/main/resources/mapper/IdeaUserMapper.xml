@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaUserMapper">
+
+	<!-- 获取用户信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.User">
+		SELECT iu.id, iu.uid, iu.oauth_nickname, iu.integral, iu.user_money, iu.is_work, iu.is_fx, iu.add_date, iul.title lev,
+			openid, xcx_openid, email, mobile tel, nickname
+		FROM idea_user iu LEFT JOIN idea_user_level iul ON iu.level_id = iul.id
+		<where>
+			<if test="nickName != null and nickName != ''">
+				iu.oauth_nickname LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+		</where>
+		ORDER BY iu.id DESC
+	</select>
+	
+	<!-- 获取分销商列表信息 -->
+	<select id="listDistributionUser" resultType="com.shop.model.dto.DistributionUser">
+		SELECT iu.id, iu.uid, iu.oauth_nickname, iu.integral, iu.user_money, iu.is_work, iu.distribution_apply_add_time,
+    		idc.name,iu.distribution_pass_add_time,iu.distribution_refunse_add_time, iu.pass_note, iu.real_name, iu.user_tel mobile,
+    		iu.distribution_lev, id.`name` dcenter_name, iu.is_fx, idc.is_apply
+		FROM idea_user iu JOIN idea_distribution_categroy idc ON iu.distribution_lev = idc.id
+			LEFT JOIN idea_dcenter id ON id.id = iu.distribution_lev
+		<where>
+			<if test="uid != null and uid != ''">
+				AND iu.uid LIKE CONCAT('%', #{uid}, '%')
+			</if>
+			<if test="id != null">
+				AND iu.id = #{id}
+			</if>
+		</where>
+		ORDER BY iu.distribution_apply_add_time DESC
+	</select>
+	
+	<!-- 获得会员排行信息 -->
+	<select id="getRanking" resultType="com.shop.model.dto.MemberRanking">
+		SELECT iu.oauth_nickname nickname, iul.title, COUNT(io.id) amount, SUM(io.price) price
+		FROM idea_user iu INNER JOIN idea_user_level iul ON iu.level_id = iul.id INNER JOIN idea_order io ON io.user_id = iu.id
+		WHERE io.order_state = 3
+			<if test="nickname != null and nickname != ''">
+				AND iu.oauth_nickname LIKE CONCAT('%', #{nickname}, '%')
+			</if>
+		GROUP BY iu.id
+		ORDER BY price DESC
+	</select>
+	
+	<!-- 根据第三方 unionid 判断是否已经授权过，是否已有数据 -->
+	<select id="isExist" resultType="com.shop.model.po.IdeaUser">
+		SELECT *
+		FROM idea_user
+		<where>
+			<if test="openId != null and openId != ''">
+				xcx_openid = #{openId}
+			</if>
+			<if test="unionId != null and unionId !=''">
+				unionid = #{unionid}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 获得用户信息 -->
+	<select id="getUser" resultType="com.shop.model.po.IdeaUser">
+		SELECT *
+		FROM idea_user
+		WHERE xcx_openid = #{openId}
+	</select>
+	
+	<!-- 获得新增会员统计 -->
+	<select id="statistic" resultType="com.shop.model.dto.UserStatis">
+		SELECT COUNT(id) amount, FROM_UNIXTIME(add_date, "%y-%m-%d") date
+		FROM idea_user
+		WHERE add_date &gt;= #{startTime} AND add_date &lt; #{endTime}
+		GROUP BY date
+	</select>
+	
+	<!-- 修改所用指定分销商类型的名称 -->
+	<update id="updateAllNote">
+		UPDATE idea_user
+		SET note = #{name}
+		WHERE distribution_lev = #{dcId}
+	</update>
+	
+	<!-- 解除推荐信息 -->
+	<update id="cancelBind">
+		UPDATE idea_user
+		SET distribution_recommend_uid = 0
+		WHERE distribution_recommend_uid = #{id}
+	</update>
+	
+	<!-- 获得当前用户的下级信息 -->
+	<select id="getUserByIds" resultType="com.shop.model.po.IdeaUser">
+		SELECT *
+		FROM idea_user
+		WHERE distribution_recommend_uid IN (${ids}) AND is_fx = 1
+	</select>
+	
+	<!-- 获得用户分销商信息 -->
+	<select id="getMerchant" resultType="java.util.Map">
+		SELECT iuc.real_name, idc.`name`, idcs.`name` sname, idcs.id lev, iu.id, iu.oauth_nickname
+		FROM idea_user iuc INNER JOIN idea_distribution_categroy idc ON idc.id = iuc.distribution_lev AND iuc.is_fx = 1
+			INNER JOIN idea_distribution_categroy idcs ON idcs.fid = idc.id AND idcs.id IN (2,3,6)
+			RIGHT JOIN idea_user iu ON iuc.id = iu.distribution_recommend_uid
+		WHERE iu.id = #{id}
+	</select>
+</mapper>

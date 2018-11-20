@@ -1,0 +1,73 @@
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1" style="height: 1500px;">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑会员</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label">用户名：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="oauth_nickname" value="{{ d.params.oauth_nickname || '' }}" readonly class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">用户名不可修改</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">电话：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.mobile || '' }}" readonly class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">姓名：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="real_name" value="{{ d.params.real_name || '' }}" readonly class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">备注：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.pass_note || '' }}" readonly class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">报单中心：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.dcenter_name || '' }}" readonly class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">申请身份：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.name || '' }}" readonly class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">分销申请时间：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.distribution_apply_add_time || '' }}" readonly class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">身份编辑：</label>
+							<div class="layui-form-mid layui-word-aux">
+								<select name="lev" id="fid"></select>
+							</div>
+						</div>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+		
+		

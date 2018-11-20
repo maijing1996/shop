@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaAdminMapper">
+
+	<!-- 登陆操作 -->
+	<select id="login" resultType="com.shop.model.dto.RedisUser">
+		SELECT id, uid, role_id, is_work
+		FROM idea_admin
+		WHERE uid = #{account} AND pwd = #{passwd}
+	</select>
+	
+	<!-- 获得管理员信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Manager">
+		SELECT ia.id, ia.uid, ia.role_id, ia.is_work, ia.last_login_ip, ia.last_login_time, iar.title role_name
+		FROM idea_admin ia LEFT JOIN idea_admin_role iar ON ia.role_id = iar.id
+		ORDER BY ia.id ASC
+	</select>
+</mapper>

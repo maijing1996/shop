@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaGoodsSpecPriceMapper">
+
+	<!-- 获得规格信息 -->
+	<select id="getAllInfo" resultType="com.shop.model.po.IdeaGoodsSpecPrice">
+		SELECT id, goods_id, mkey `key`, key_name, price, stock, sku, sales
+		FROM idea_goods_spec_price
+		WHERE goods_id = #{goodsId}
+	</select>
+	
+	<!-- 获得规格信息 -->
+	<select id="getInfo" resultType="java.util.Map">
+		SELECT ig.spec_type, igsp.key_name
+		FROM idea_goods ig INNER JOIN idea_goods_spec_price igsp ON igsp.goods_id = ig.id
+		WHERE ig.id = #{goodsId}
+	</select>
+	
+	<!-- 获得信息 -->
+	<select id="getInfoById" resultType="com.shop.model.po.IdeaGoodsSpecPrice">
+		SELECT *
+		FROM idea_goods_spec_price
+		WHERE goods_id = #{goodsId} AND mkey = #{keys}
+		LIMIT 0,1
+	</select>
+	
+	<!-- 获得用户信息 -->
+	<select id="getAllById" resultType="com.shop.model.po.IdeaGoodsSpecPrice">
+		SELECT *
+		FROM idea_goods_spec_price
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 获得所有的规格信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.GoodsSpecPrice">
+		SELECT igsp.*, igc.title cname, ig.title
+		FROM idea_goods_spec_price igsp INNER JOIN idea_goods ig ON ig.id = igsp.goods_id
+			INNER JOIN idea_goods_category igc ON igc.id = ig.cat_id
+		WHERE igsp.stock > 10
+			<if test="keys_name != null and keys_name != ''">
+				AND igsp.key_name = #{keys_name}
+			</if>
+	</select>
+	
+	<!-- 通过商品id删除所有的规格信息 -->
+	<delete id="deleteByGoodsId">
+		DELETE FROM idea_goods_spec_price
+		WHERE goods_id = #{goodsId}
+	</delete>
+</mapper>

@@ -1,0 +1,264 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商城设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>网站设置</cite></a>
+  </div>
+</div>
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<div class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">网站信息</li>
+					<li>基本设置</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<div class="layui-form-item">
+					    	<label class="layui-form-label"><span>*</span> 网站Logo：</label>
+					    	<div class="layui-input-inline">
+        						<input type="text" name="logo" id="logo" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input">
+						    </div>
+						    <button type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button> 
+						    <button class="layui-btn layui-btn-normal" type="button" onclick="layer.open({type: 1,shade: false,title: false, content: $('#pic')});">预览</button>
+						    <span style="display:none;" id="pic"><img id="pic2" src=""></span>
+						</div>
+						
+						<script type="text/html" template lay-url="/manager/shop/site/info" lay-type="post" lay-done="layui.data.done(d);">
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 网站名称：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="title" datatype="*" nullmsg="网站名称为空!" placeholder="请输入网站名称" class="layui-input" value="{{ d.data.title || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">将显示到前台title中</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">网站联系人：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="name" placeholder="请输入网站联系人" class="layui-input" value="{{ d.data.name || '' }}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">联系电话：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="phone" placeholder="请输入联系电话" class="layui-input" value="{{ d.data.phone || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">用于用户咨询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">联系手机：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="tel" datatype="m" ignore="ignore" placeholder="请输入联系手机" errormsg="手机号码错误" class="layui-input" value="{{ d.data.tel || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">用于用户咨询及接收短信</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">管理员openID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="openid" placeholder="请输入管理员openID" class="layui-input" value="{{ d.data.openid || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">用于接收微信信息，关注公众号后到会员管理中查询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">在线咨询QQ：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="qq" placeholder="请输入QQ号码" class="layui-input" value="{{ d.data.qq || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">用于QQ在线咨询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">网站关键词：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="keywords" placeholder="请输入网站关键词" class="layui-input" value="{{ d.data.keywords || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">将显示到前台meta-keywords中</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">网站描述：</label>
+								<div class="layui-input-inline" style="width: 400px;">
+									<input type="text" name="description" placeholder="请输入网站描述" class="layui-input" value="{{ d.data.description || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">将显示到前台meta-description中</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">网站备案号：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="record" placeholder="请输入网站备案号" class="layui-input" value="{{ d.data.record || '' }}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">启用PC端：</label>
+								<div class="layui-input-inline" style="width: 70px;">
+									{{# if(d.data.pc == 0){ }}
+										<input type="checkbox" name="pc" lay-skin="switch">
+									{{#} else { }}
+										<input type="checkbox" name="pc" lay-skin="switch" checked>
+									{{#} }}
+								</div>
+								<div class="layui-form-mid layui-word-aux">开启后PC打开将显示PC模板</div>
+							</div>
+						</script>
+					</div>
+					<div class="layui-tab-item">
+						<script type="text/html" template lay-url="/manager/shop/site/info" lay-type="post">
+							<div class="layui-form-item">
+								<label class="layui-form-label">上传大小：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<select name="upsize" id="upsize"></select>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 允许上传类型：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="uptype" datatype="*" nullmsg="允许上传类型为空!" placeholder="请输入允许上传类型" class="layui-input" value="{{ d.data.uptype || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">如：jpg,gif,png,bmp,rar,zip</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 注册赠送积分：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" name="reg_integral" datatype="n" nullmsg="注册赠送积分为空!" errormsg="注册赠送积分不为数字!" placeholder="请输入赠送积分" class="layui-input" value="{{ d.data.reg_integral || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">分</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 默认库存：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" name="default_stock" datatype="n" nullmsg="默认库存为空!" errormsg="默认库存不为数字!" placeholder="请输入默认库存" class="layui-input" value="{{ d.data.default_stock || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">添加商品时的默认库存</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 库存预警：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" name="warning_stock" datatype="n" nullmsg="库存预警为空!" errormsg="库存预警不为数字!" placeholder="请输入库存预警" class="layui-input" value="{{ d.data.warning_stock || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">库存小于此数将预警</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">允许提现：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<select name="cash" lay-filter="m_cash" id="cash"></select>
+								</div>
+							</div>
+							<div class="layui-form-item" id="span_cash" style="display: none;"{/eq}>
+								<label class="layui-form-label"><span>*</span> 最低提现额：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" name="mini_cash" datatype="n" nullmsg="请输入最低提现额!" errormsg="最低提现额不为数字!" placeholder="输入最低提现额" value="{{ d.data.mini_cash || '' }}" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">每次最少要提现这么多</div>
+							</div>
+							<input name="id" value="{{ d.data.id || '' }}" type="hidden">
+						</script>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="LAY-user-front-search">立即提交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use(['admin', 'table', 'upload'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		upload = layui.upload,
+  		form = layui.form;
+	  	//上传头像
+  		upload.render({
+    		elem: '#layuiadmin-upload-useradmin',
+    		url: '/upload',
+    		accept: 'images',
+    		method: 'get',
+    		acceptMime: 'image/*',
+    		done: function(res){
+      			$(this.item).prev("div").children("input").val(res.url);
+      			$("#pic2").attr("src",res.file);
+      			//动态加载
+    			form.render();
+    		}
+  		});
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    		console.log(field);
+    		if(field.pc == 'on') {
+    			field.pc = 1;
+    		} else {
+    			field.pc = 0;
+    		}
+    		//初始化
+			$.ajax({
+    			type: "POST",
+				url: "/manager/shop/site/update",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				data: JSON.stringify(field),
+				success: function(data){
+					layer.open({
+              	      	content: data.desc,
+               	     	btn: ['确认'],
+               	     	yes: function(index, layero) {
+                    		layer.close(index);
+                    		//刷新当前页面
+    			    		window.location.reload();
+                    	}
+               	 	});
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+			return false;
+  		});
+	});
+	
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+	  	layui.use(['form'], function(){
+	  		var $ = layui.$, form = layui.form;
+	  		$("#qr_code").val(d.data.qr_code);
+	     	form.render();
+	  	});
+	};
+	
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+	  	layui.use(['form'], function(){
+	    	var form = layui.form;
+	    	
+	    	var obj = d.data;
+	    	var arr = [1,2,5,10,20,50,100];
+	    	if(obj.cash == 1) {
+	    		$("#cash").append("<option value='1' selected>允许</option>"
+						+"<option value='0'>禁止</option>");
+	    	} else {
+	    		$("#cash").append("<option value='1'>允许</option>"
+						+"<option value='0' selected>禁止</option>");
+	    	}
+	    	
+	    	for(var i=0; i < 7; i++) {
+	    		if(obj.upsize == arr[i]) {
+	    			$("#upsize").append("<option value="+arr[i]+" selected>"+arr[i]+"M</option>");
+	    		} else {
+	    			$("#upsize").append("<option value="+arr[i]+">"+arr[i]+"M</option>");
+	    		}
+	    	}
+	    	
+	    	$("#logo").val(d.data.logo);
+	     	form.render();
+	  	});
+	};
+</script>

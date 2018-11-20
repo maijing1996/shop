@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaArticleMapper">
+
+	<!-- 获得文章信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Article">
+		SELECT ia.id, ia.cat_id, ia.title, ia.source, pic, ia.summary, ia.info, ia.tags, ia.url, ia.keywords, iac.title cat_name,
+			ia.description, ia.is_top, ia.is_show, ia.hits, ia.zan, ia.sequence, ia.add_date, ia.is_jp, iac.title cat_title
+		FROM idea_article ia INNER JOIN idea_article_category iac ON ia.cat_id = iac.id
+		<where>
+			<if test="catId != null">
+				AND ia.cat_id = #{catId}
+			</if>
+			<if test="title != null and title != ''">
+				AND iac.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+		ORDER BY ia.sequence, ia.id DESC
+	</select>
+	
+	<select id="listAllInfo" resultType="com.shop.model.dto.ArticleModel">
+		SELECT iac.id, iac.title, iacs.id sid, iacs.title stitle
+		FROM idea_article_category iac LEFT JOIN idea_article_category iacs ON iacs.parent_id = iac.id
+		WHERE iac.parent_id = 0
+		ORDER BY iac.sequence, iacs.sequence
+	</select>
+</mapper>

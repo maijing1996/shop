@@ -1,0 +1,33 @@
+
+
+<form class="layui-form" lay-filter="OM-form-account" style="padding: 20px 0 0 0;">
+  	<div class="layui-form-item">
+    	<label class="layui-form-label">调整类型：</label>
+    	<div class="layui-input-inline">
+    		<select name="type">
+    			<option value="1">充值</option>
+    			<option value="2">消费</option>
+    		</select>
+   	 	</div>
+  	</div>
+  	<div class="layui-form-item">
+    	<label class="layui-form-label">调整数量：</label>
+   		<div class="layui-input-inline">
+        	<input type="text" name="amount" placeholder="请输入调整数量" autocomplete="off" class="layui-input">
+    	</div>
+ 	</div>
+ 	<div class="layui-form-item">
+    	<label class="layui-form-label">操作备注：</label>
+   		<div class="layui-input-inline">
+        	<textarea name="info" placeholder="请输入描述" class="layui-textarea"></textarea>
+    	</div>
+ 	</div>
+  	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit lay-filter="OM-user-account">立即提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+
+

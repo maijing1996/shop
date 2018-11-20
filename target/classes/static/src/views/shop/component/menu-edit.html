@@ -1,0 +1,81 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑菜单</li>
+				</ul>
+				<div class="layui-tab-content" style="border-radius">
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label">所属菜单：</label>
+							<div class="layui-form-mid">顶级菜单</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" lay-verify="required" value="{{ d.params.title || '' }}" placeholder="请输入名称" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 控制器：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="controller" lay-verify="required" value="{{ d.params.controller || '' }}" placeholder="请输入控制器" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">操作方法：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="operation" value="{{ d.params.operation || '' }}" placeholder="请输入操作方法" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">如果为index可不填</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">栏目图标：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" name="ico" value="{{ d.params.ico || '' }}" placeholder="请输入栏目图标" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 排序：</label>
+							<div class="layui-input-inline" style="width: 80px;">
+								<input type="text" name="sequence" lay-verify="required" value="{{ d.params.sequence || '' }}" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">是否跳转：</label>
+							<div class="layui-input-block">
+								{{# if(d.params.is_turn == '否'){ }}
+									<input type="checkbox" name="is_turn" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_turn" lay-skin="switch" checked>
+								{{#} }}
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">是否显示：</label>
+							<div class="layui-input-block">
+								{{# if(d.params.is_show == '否'){ }}
+									<input type="checkbox" name="is_show" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_show" lay-skin="switch" checked>
+								{{#} }}
+							</div>
+						</div>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+

@@ -1,0 +1,315 @@
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-main">
+			<form class="layui-body-ctr">
+				<div class="layui-ctt1">
+					<div class="layui-tab layui-tab-card">
+						<ul class="layui-tab-title">
+							<li class="layui-this">订单详情</li>
+						</ul>
+						<div class="layui-tab-content">
+							<script type="text/html" template>
+								<div class="layui-form-item">
+									<div class="order_ctr box">
+										<div class="m_ctr"><strong>基本信息</strong></div>
+										<div class="m_ctr">
+											<table class="layui-table">
+												<colgroup>
+													<col width="10%">
+													<col width="23%">
+													<col width="10%">
+													<col width="23%">
+													<col width="10%">
+													<col>
+												</colgroup>
+												<tbody>
+												<tr>
+													<td align="right"><span>订单ID:</span></td>
+													<td>{{ d.params.result.id || '' }}</td>
+													<td align="right"><span>订单号:</span></td>
+													<td>{{ d.params.result.order_sn || '' }}</td>
+													<td align="right"><span>会员/ID:</span></td>
+													<td>{{ d.params.result.user_id || '' }}/{{ d.params.result.nickname || '' }}</td>
+												</tr>
+												<tr>
+													<td align="right"><span>订单状态:</span></td>
+													<td>{{ d.params.result.state_name || '' }}</td>
+													<td align="right"><span>下单时间:</span></td>
+													<td>{{ d.params.result.add_date || '' }}</td>
+													<td align="right"><span>物流信息:</span></td>
+													<td>{{ d.params.result.express_title || '' }}</td>
+												</tr>
+												<tr>
+													<td align="right"><span>支付方式:</span></td>
+													<td>{{ d.params.result.type_name || '' }}</td>
+													<td align="right"><span>支付时间:</span></td>
+													<td>{{ d.params.result.pay_date || '' }}</td>
+													<td align="right"><span>应付金额:</span></td>
+													<td>￥{{ d.params.result.pay_price || '' }}</td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+		
+								<div class="layui-form-item">
+									<div class="order_ctr box">
+										<div class="m_ctr"><strong>收货信息</strong></div>
+										<div class="m_ctr">
+											<table class="layui-table">
+												<colgroup>
+													<col width="10%">
+													<col width="23%">
+													<col width="10%">
+													<col width="23%">
+													<col width="10%">
+													<col>
+												</colgroup>
+												<tbody>
+												<tr>
+													<td align="right"><span>收货人:</span></td>
+													<td>{{ d.params.result.name || '' }}</td>
+													<td align="right"><span>联系电话:</span></td>
+													<td>{{ d.params.result.tel || '' }}</td>
+													<td align="right"><span>配送方式:</span></td>
+													<td>{{ d.params.result.send_name || '' }}</td>
+												</tr>
+												<tr>
+													<td align="right"><span>收货地址:</span></td>
+													<td colspan="5">{{ d.params.result.address || '' }}</td>
+												</tr>
+												<tr>
+													<td align="right"><span>订单备注:</span></td>
+													<td colspan="5">{{ d.params.result.info || '' }}</td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+		
+								<div class="layui-form-item">
+									<div class="order_ctr box">
+										<div class="m_ctr"><strong>商品信息</strong></div>
+										<div class="m_ctr">
+											<table class="layui-table">
+												<colgroup>
+													<col width="11%">
+													<col>
+													<col width="15%">
+													<col width="11%">
+													<col width="11%">
+													<col width="11%">
+													<col width="11%">
+												</colgroup>
+												<thead>
+												<tr>
+													<th>商品编号</th>
+													<th>商品名称</th>
+													<th>商品规格</th>
+													<th>数量</th>
+													<th>单品价格</th>
+													<th>会员折扣价</th>
+													<th>单品小计</th>
+												</tr>
+												</thead>
+												<tbody>
+												{{# layui.each(d.params.result.list, function(index, item){ }}
+												<tr>
+													<td>{{ item.sn || '' }}</td>
+													<td>{{ item.title || '' }}</td>
+													<td>{{ item.spec_item || '' }}</td>
+													<td>{{ item.amount || '' }}</td>
+													<td>{{ item.price || '' }}</td>
+													<td>{{ item.rebate_price || '' }}</td>
+													<td>{{ item.total_price || '' }}</td>
+												</tr>
+												{{#}); }}
+												<tr>
+													<td colspan="7" align="right">订单总额：{{ d.params.result.price || '' }}</td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+		
+								<div class="layui-form-item">
+									<div class="order_ctr box">
+										<div class="m_ctr">
+											<strong>费用信息</strong>
+											{{#if(d.params.result.order_state == 0){ }}
+												<a id="change" data-type='{{ d.params.result.id || '' }}'>
+													<i class="iconfont">&#xe605;</i> 调整运费
+												</a>
+											{{#}}}
+											</div>
+										<div class="m_ctr">
+											<table class="layui-table">
+												<colgroup>
+													<col width="10%">
+													<col width="23%">
+													<col width="10%">
+													<col width="23%">
+													<col width="10%">
+													<col>
+												</colgroup>
+												<tbody>
+												<tr>
+													<td align="right"><span>小计:</span></td>
+													<td>{{ d.params.result.price || '' }}</td>
+													<td align="right"><span>优惠券抵扣:</span></td>
+													<td>{{ - d.params.result.coupon_price || '0' }}</td>
+													<td align="right"><span>积分抵扣:</span></td>
+													<td>{{ - d.params.result.jf_price || '0' }}</td>
+												</tr>
+												<tr>
+													<td align="right"><span>价格调整:</span></td>
+													<td>{{ d.params.result.trim_price || '0' }}</td>
+													<td align="right"><span>运费:</span></td>
+													<td>{{+ d.params.result.express_price || '0' }}</td>
+													<td align="right"><span>应付金额:</span></td>
+													<td>{{ d.params.result.pay_price || '0' }}</td>
+												</tr>
+												<tr>
+													<td align="right"><span>代金券抵扣:</span></td>
+													<td>{{ d.params.result.voucher_price || '0' }}</td>
+													<td align="right"></td>
+													<td></td>
+													<td align="right"><span></span></td>
+													<td></td>
+												</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+		
+								<div class="layui-form-item" style="border: 0;">
+									<div class="order_ctr box">
+										{{# if(d.params.result.order_state == 0) { }}
+											<button type="button" class="layui-btn layui-btn-primary" id="state" data-type='-1&{{ d.params.result.id || '' }}'>取消订单</button>
+										{{# } else if(d.params.result.order_state == 1) { }}
+											<button type="button" class="layui-btn" id="state" data-type='2&{{ d.params.result.id || '' }}'>点击发货</button>
+										{{# } else { }}}
+										<button type="button" class="layui-btn layui-btn-primary" onclick="window.location.reload();">返回列表</button>
+									</div>
+								</div>
+							</script>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+	
+	<!-- 
+	{{# if(d.params.result.order_state == 0) { }}
+											<button type="button" class="layui-btn" id="state" data-type='1&{{ d.params.result.id || '' }}'>标记为已付款</button>
+											<button type="button" class="layui-btn layui-btn-primary" id="state" data-type='-1&{{ d.params.result.id || '' }}'>取消订单</button>
+										{{# } else if(d.params.result.order_state == 1) { }}
+											<button type="button" class="layui-btn" id="state" data-type='2&{{ d.params.result.id || '' }}'>点击发货</button>
+										{{# } else if(d.params.result.order_state == 2) { }}
+											<button type="button" class="layui-btn" id="state" data-type='3&{{ d.params.result.id || '' }}'>确认收货</button>
+										{{# } else { }}}
+	
+	 -->
+	
+	
+	<script>
+        //标记为已付款
+        function set_pay() {
+            layer.open({
+                type: 2,
+                title: '标记为已付款',
+                shadeClose: true,
+                shade: false,
+                area: ['460px', '200px'],
+                content: "{:url('admin/order/set_pay',['id'=>$data.id])}"
+            });
+        }
+		//调整订单价格
+		function edit_price() {
+            layer.open({
+                type: 2,
+                title: '修改运费',
+                shadeClose: true,
+                shade: false,
+                area: ['460px', '260px'],
+                content: "{:url('admin/order/edit_price',['id'=>$data.id])}"
+            });
+
+        }
+        //取消订单
+        function cancel_order() {
+            layer.open({
+                btn: ['确认', '取消'],
+                icon: 3 ,
+                content: '确定要取消吗?' ,
+                yes: function(index){
+                    layer.close(index);
+                    $.ajax({
+                        type:"POST",
+                        url:"{:url('admin/order/cancel_order')}",
+                        data: {'order_id': '{$data.id}'},
+                        dataType:"json",
+                        beforeSend:function(){
+                            layer.load();
+                        },
+                        success:function(data){
+                            layer.closeAll();
+                            if(data.code=='1001') {
+                                window.location.reload();
+                            }
+                            else {
+                                layer.msg(data.msg,{icon: 5});
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        //去发货
+        function send_goods() {
+            layer.open({
+                type: 2,
+                title: '订单发货',
+                shadeClose: true,
+                shade: false,
+                area: ['460px', '260px'],
+                content: "{:url('admin/order/send_goods',['id'=>$data.id])}"
+            });
+        }
+        //确认收货
+        function receipt_goods() {
+            layer.open({
+                btn: ['确认', '取消'],
+                icon: 3 ,
+                content: '确定要收货吗?' ,
+                yes: function(index){
+                    layer.close(index);
+                    $.ajax({
+                        type:"POST",
+                        url:"{:url('admin/order/set_receipt')}",
+                        data: {'order_id': '{$data.id}'},
+                        dataType:"json",
+                        beforeSend:function(){
+                            layer.load();
+                        },
+                        success:function(data){
+                            layer.closeAll();
+                            if(data.code=='1001') {
+                                window.location.reload();
+                            }
+                            else {
+                                layer.msg(data.msg,{icon: 5});
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+	</script>

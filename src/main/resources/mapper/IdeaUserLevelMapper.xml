@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaUserLevelMapper">
+
+	<!-- 获取会员等级信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.UserLevel">
+		SELECT id, title, amount, rebate, info
+		FROM idea_user_level
+		<where>
+			<if test="nickName != null and nickName != ''">
+				title LIKE CONCAT('%', #{nickName}, '%') 
+			</if>
+		</where>
+	</select>
+	
+	<!-- 通过积分获得会员等级 -->
+	<select id="getLevelId" resultType="java.lang.Long">
+		SELECT id
+		FROM idea_user_level
+		WHERE amount &lt;= #{score}
+		ORDER BY amount DESC
+		LIMIT 0,1
+	</select>
+	
+	<!--获得会员等级的折扣价 -->
+	<select id="getLevelRebate" resultType="java.util.Map">
+		SELECT iul.rebate, iu.integral
+		FROM idea_user_level iul INNER JOIN idea_user iu ON iul.id=iu.level_id
+		WHERE iu.xcx_openid = #{openId}
+	</select>
+</mapper>

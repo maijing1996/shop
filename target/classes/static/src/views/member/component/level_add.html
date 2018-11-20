@@ -1,0 +1,46 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">添加等级</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 名称：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" lay-verify="required" placeholder="请输入名称" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 消费额：</label>
+						<div class="layui-input-inline">
+							<input type="number" name="amount" lay-verify="required" placeholder="请输入消费额" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">元，消费这么多后可升级到此等级</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 折扣率：</label>
+						<div class="layui-input-inline">
+							<input type="number" name="rebate" lay-verify="required" placeholder="请输入折扣率" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">%，此等级会员可享受的折扣</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">等级描述：</label>
+						<div class="layui-input-block">
+							<textarea name="info" placeholder="请输入描述" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

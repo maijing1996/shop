@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaUserAddressMapper">
+	
+	<!-- 获取默认地址  -->
+	<select id="getDefaultAddress" resultType="com.shop.model.po.IdeaUserAddress">
+		SELECT iua.* 
+		FROM idea_user_address iua INNER JOIN idea_user iu ON iua.user_id=iu.id
+		WHERE iu.xcx_openid=#{openId}
+			<if test="type != null">
+				AND iua.is_default=#{type}
+			</if>
+	</select>
+</mapper>

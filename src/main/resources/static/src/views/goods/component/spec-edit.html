@@ -1,0 +1,66 @@
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<div class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑规格</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 规格名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" lay-verify="required" value="{{ d.params.title || '' }}" placeholder="请输入名称" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">如：颜色</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 所属模型：</label>
+							<div class="layui-input-inline">
+								<select name="type_id" lay-verify="required" id="m_type"></select>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">规格项：</label>
+							<div class="layui-input-inline" style="width: 500px;">
+								<textarea name="spec" placeholder="请输入规格项" class="layui-textarea">
+									{{# layui.each(d.params.list, function(index, ii){ }}
+										{{ii.spec}}&#10;
+									{{#}); }}
+								</textarea>
+							</div>
+							<div class="layui-form-mid layui-word-aux">一行一个。如：红、黄、蓝</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">排序：</label>
+							<div class="layui-input-inline" style="width: 80px;">
+								<input type="text" name="sequence" value="{{ d.params.sequence || '' }}" class="layui-input">
+							</div>
+						</div>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否筛选：</label>
+						<div class="layui-input-block">
+							<script type="text/html" template>
+								{{# if(d.params.is_search == 0){ }}
+									<input type="checkbox" name="is_search" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_search" lay-skin="switch" checked>
+								{{#} }}
+							</script>
+						</div>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+			
+			

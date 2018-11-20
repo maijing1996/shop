@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaCouponMapper">
+
+	<!-- 获得 优惠券信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Coupon">
+		SELECT ic.id, ic.title, ic.type, ic.yh_price, ic.min_price, ic.amount, COUNT(icu.coupon_id) gain,
+			COUNT(icuu.coupon_id) use_amount, ic.send_bdate, ic.send_edate, ic.use_bdate, ic.use_edate, ic.validity
+		FROM idea_coupon ic LEFT JOIN idea_coupon_user icu ON icu.coupon_id = ic.id
+			LEFT JOIN idea_coupon_user icuu ON icuu.coupon_id = ic.id AND icuu.is_use = 1
+		<where>
+			<if test="title != null">
+				ic.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+		GROUP BY ic.id
+		ORDER BY ic.id DESC
+	</select>
+	
+	<!-- 获取已领取未使用的代金券列表 -->
+	<select id="getVoucher" resultType="java.util.Map">
+		SELECT ic.id, ic.title, ic.type, ic.yh_price, ic.min_price, ic.use_edate, icu.add_date
+		FROM idea_coupon ic INNER JOIN idea_coupon_user icu ON ic.id = icu.coupon_id
+		WHERE icu.is_use = 0 AND icu.user_id = #{userId}
+	</select>
+	
+	<!-- 获取代金券，已领取未使用的代金券列表 -->
+	<select id="getUseVoucher" resultType="java.util.Map">
+		SELECT ic.title, ic.type, ic.yh_price, ic.min_price, icu.coupon_sn id, ic.use_edate, icu.add_date
+		FROM idea_coupon ic INNER JOIN idea_coupon_user icu ON ic.id = icu.coupon_id
+		WHERE icu.is_use = 0 AND icu.user_id = #{userId} AND ic.min_price &lt; #{price}
+		ORDER BY ic.yh_price DESC
+	</select>
+	
+	<!-- 获得我的代金券 -->
+	<select id="listVoucher" resultType="java.util.Map">
+		SELECT ic.id, ic.title, ic.type, ic.yh_price, ic.min_price, ic.use_edate, icu.add_date, icu.is_use
+		FROM idea_coupon ic INNER JOIN idea_coupon_user icu ON ic.id = icu.coupon_id
+		WHERE icu.user_id = #{userId}
+			<if test="type != null">
+				AND ic.type = #{type}
+			</if>
+	</select>
+	
+	<!-- 获得优惠券列表 -->
+	<select id="getInfoByIds" resultType="com.shop.model.po.IdeaCoupon">
+		SELECT icu.id, ic.yh_price
+		FROM idea_coupon ic INNER JOIN idea_coupon_user icu ON icu.coupon_id = ic.id
+		WHERE icu.user_id = #{userId}
+        	AND icu.coupon_sn IN
+            <foreach item="coupon" index="index" collection="couponSn" open="(" separator="," close=")">#{coupon}</foreach>
+	</select>
+	
+	<!-- 将优惠券设置为已使用 -->
+	<update id="updateUseCoupon">
+		UPDATE idea_coupon_user
+		SET is_use = 1
+		WHERE user_id = #{userId}
+        	AND coupon_sn IN
+            <foreach item="coupon" index="index" collection="couponSn" open="(" separator="," close=")">#{coupon}</foreach>
+	</update>
+</mapper>

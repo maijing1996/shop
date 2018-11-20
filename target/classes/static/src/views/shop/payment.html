@@ -1,0 +1,196 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商城设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>支付设置</cite></a>
+  </div>
+</div>
+
+<script type="text/html" template lay-url="/manager/shop/payment/info" lay-type="post" lay-done="layui.data.done(d);">
+	<div class="layui-main layui-form">
+		<div class="layui-body-ctr">
+			<div class="layui-ctt1">
+				<div class="layui-tab layui-tab-card">
+					<ul class="layui-tab-title">
+						<li class="layui-this">支付设置</li>
+					</ul>
+					<div class="layui-tab-content">
+						<input type="hidden" name="id" value="{{ d.data.id || '' }}">
+						<div class="layui-form-item">
+							<label class="layui-form-label">微信支付：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="wx_pay" lay-filter="m_wxpay">
+									{{# if(d.data.wx_pay == 1) { }}
+										<option value="1" selected>开启</option>
+										<option value="0">关闭</option>
+									{{# } else { }}
+										<option value="1">开启</option>
+										<option value="0" selected>关闭</option>
+									{{#} }}
+								</select>
+							</div>
+						</div>
+						<div class="span_wxpay">
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 商户号：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="wx_mchid" placeholder="微信支付商户号" value="{{ d.data.wx_mchid || '' }}" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">公众平台微信支付中查询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 支付秘钥：</label>
+								<div class="layui-input-inline" style="width: 300px;">
+									<input type="text" name="wx_appkey" placeholder="微信支付秘钥" value="{{ d.data.wx_appkey || '' }}" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">公众平台微信支付中查询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">通知地址：</label>
+								<div class="layui-input-inline" style="width: 450px;">
+									<input type="text" name="wx_notify_url" readonly value="{{ d.data.wx_notify_url || '' }}" class="layui-input">
+								</div>
+							</div>
+					    </div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">支付宝支付：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="ali_pay" lay-filter="m_alipay">
+									{{# if(d.data.ali_pay == 1) { }}
+										<option value="1" selected>开启</option>
+										<option value="0" >关闭</option>
+									{{# } else { }}
+										<option value="1" >开启</option>
+										<option value="0" selected>关闭</option>
+									{{#} }}
+								</select>
+							</div>
+						</div>
+						<div class="span_alipay">
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 应用APPID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="ali_appid" placeholder="应用APPID" value="{{ d.data.ali_appid || '' }}" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">支付宝开放平台查询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 支付宝公钥：</label>
+								<div class="layui-input-inline" style="width: 450px;">
+									<textarea name="ali_public_key" placeholder="支付宝公钥" class="layui-textarea">{{ d.data.ali_public_key || '' }}</textarea>
+								</div>
+								<div class="layui-form-mid layui-word-aux">不能换行，上传应用公钥后获取</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 应用私钥：</label>
+								<div class="layui-input-inline" style="width: 450px;">
+									<textarea name="ali_private_key" placeholder="应用私钥" class="layui-textarea">{{ d.data.ali_private_key || '' }}</textarea>
+								</div>
+								<div class="layui-form-mid layui-word-aux">不能换行，对应应用设置查询</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">应用网关：</label>
+								<div class="layui-input-inline" style="width: 450px;">
+									<input type="text" name="ali_notify_url" readonly value="{{ d.data.ali_notify_url || '' }}" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">回调地址：</label>
+								<div class="layui-input-inline" style="width: 450px;">
+									<input type="text" name="ali_return_url" readonly value="{{ d.data.ali_return_url || '' }}" class="layui-input">
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item" style="border: 0;">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script>
+	layui.use('order', layui.factory('order')).use(['admin', 'order', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		//监听事件
+  		form.on('select(m_wxpay)', function(data){
+  			if(data.value == 1) {
+				$(".span_wxpay").css("display","block");
+			} else {
+				$(".span_wxpay").css("display","none");
+			}
+		});
+  		form.on('select(m_alipay)', function(data){
+  			if(data.value == 1) {
+				$(".span_alipay").css("display","block");
+			} else {
+				$(".span_alipay").css("display","none");
+			}
+		});
+  		
+  		//
+  		form.on('submit(OM-form-submit)', function(data){
+			var field = data.field;
+			//初始化
+			$.ajax({
+    			type: "POST",
+				url: "/manager/shop/payment/update",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				data: JSON.stringify(field),
+				success: function(data){
+					layer.open({
+              	      	content: data.desc,
+               	     	btn: ['确认'],
+               	     	yes: function(index, layero) {
+                    		layer.close(index);
+                    		//刷新当前页面
+    			    		window.location.reload();
+                    	}
+               	 	});
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+			return false;
+		});
+	});
+	
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+		layui.use(['admin', 'table','form'], function(){
+			var $ = layui.$,
+	  		admin = layui.admin,
+	  		form = layui.form;
+			
+			var obj = d.data;
+			if(obj.wx_pay == 1) {
+				$(".span_wxpay").css("display","block");
+			} else {
+				$(".span_wxpay").css("display","none");
+			}
+			if(obj.ali_pay == 1) {
+				$(".span_alipay").css("display","block");
+			} else {
+				$(".span_alipay").css("display","none");
+			}
+			
+			//重载页面
+	     	form.render();
+		});
+	};
+</script>

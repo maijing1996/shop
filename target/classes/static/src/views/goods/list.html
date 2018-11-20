@@ -1,0 +1,503 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商品管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>商城列表</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">商品标题</label>
+          <div class="layui-input-block">
+            <input type="text" name="userName" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">所属分类</label>
+          <div class="layui-input-block">
+            <select name="sex">
+              <option value="0">不限</option>
+              <option value="1">男</option>
+              <option value="2">女</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">批量删除</button>
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+      </div>
+      
+      <table id="OM-goods-list" lay-filter="OM-goods-list"></table>
+      <script type="text/html" id="imgTpl"> 
+        <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>
+      </script> 
+      <script type="text/html" id="toolbar-goods-list">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('goods', layui.factory('goods')).use(['admin', 'goods', 'table', 'layedit'], function(){
+		var $ = layui.$,
+		admin = layui.admin,
+		view = layui.view,
+		table = layui.table,
+		layedit = layui.layedit,
+		form = layui.form;
+	
+		form.render(null, 'layadmin-userfront-formlist');
+	
+		//监听搜索
+		form.on('submit(LAY-user-front-search)', function(data){
+			var field = data.field;
+			//执行重载
+			table.reload('OM-goods-list', {
+	  			where: field
+			});
+		});
+		//事件
+  		var active = {
+    		batchdel: function(){
+      			var checkStatus = table.checkStatus('OM-goods-list'),
+      			checkData = checkStatus.data; //得到选中的数据
+      			if(checkData.length === 0){
+        			return layer.msg('请选择数据');
+      			}
+
+      			//数据封装
+      			var val = '';
+      			for(var i=0; i < checkData.length; i++) {
+      				var obj =checkData[i];
+      				val = val + obj.id + ",";
+      			}
+      			var val = val.substring(0, val.length - 1);
+      			var req = {"ids": val};
+      			
+      			layer.confirm('确定删除吗？', function(index) {
+        			layer.close(index);
+	          		//执行 Ajax 后重载
+	          		$.ajax({
+						type: "POST",
+						url: "/manager/goods/article/deletes",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(req),
+						success: function(data){
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		table.reload('OM-goods-list', null);
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+        		});
+      		},
+      		add: function() {
+      			view('OM-module-temp').render('goods/component/goods-add', null).done(function() {
+      				//初始化类型
+      				$('#m_cat_id').append("<option value=''>请选择商品分类</option>");
+      				$.ajax({
+						type: "POST",
+						url: "/manager/goods/categroy/info/all",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify({}),
+						success: function(data){
+							var fid = 0;
+							for(var i=0; i < data.data.length; i++) {
+								var obj = data.data[i];
+								if(fid == 0 || obj.id != fid) {
+									$('#m_cat_id').append("<option value="+obj.id+">"+obj.title+"</option>");
+									fid = obj.id;
+								} else {
+									$('#m_cat_id').append("<option value="+obj.sid+"> └ "+obj.stitle+"</option>");
+								}
+							}
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+      				//初始化人群
+      				$('#m_person_id').append("<option value=''>请选择所属人群</option>");
+      				$.ajax({
+						type: "POST",
+						url: "/manager/goods/person/info/all",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify({}),
+						success: function(data){
+							var fid = 0;
+							for(var i=0; i < data.data.length; i++) {
+								var obj = data.data[i];
+								if(fid == 0 || obj.id != fid) {
+									$('#m_person_id').append("<option value="+obj.id+">"+obj.title+"</option>");
+									fid = obj.id;
+								} else {
+									$('#m_person_id').append("<option value="+obj.sid+"> └ "+obj.stitle+"</option>");
+								}
+							}
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+      				//初始化品牌
+      				$('#m_brand_id').append("<option value='0'>请选择所属品牌</option>");
+      				$.ajax({
+						type: "POST",
+						url: "/manager/goods/brand/info",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify({"page":1,"size":1000}),
+						success: function(data){
+							var fid = 0;
+							for(var i=0; i < data.data.length; i++) {
+								var obj = data.data[i];
+								$('#m_brand_id').append("<option value="+obj.id+">"+obj.title+"</option>");
+							}
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+      				//初始化商品模型
+      				$('#m_type').append("<option value='0'>请选择商品模型</option>");
+      				$.ajax({
+						type: "POST",
+						url: "/manager/goods/model/info",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify({"page":1,"size":1000}),
+						success: function(data){
+							var fid = 0;
+							for(var i=0; i < data.data.length; i++) {
+								var obj = data.data[i];
+								$('#m_type').append("<option value="+obj.id+">"+obj.title+"</option>");
+							}
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+       				//富文本框
+      				/* layedit.set({
+      				  	uploadImage: {
+      				    	url: '/editor/upload', //接口url
+      				    	type: 'post' //默认post
+      				  	}
+      				});
+      				//富文本框初始化
+				  	var layedit_index = layedit.build('editor'); */ //建立编辑器
+				  	//动态加载
+       				form.render();
+       				
+				  	var data9 = '';
+				  	//select 监听事件
+				  	form.on('select(m_type)', function(data){
+				  		if(data.value == 0) {
+				  			$(".spec_ctr").css("display","none");
+				  			return false;
+				  		}
+				  		$('#spec_input_tab_2').empty();
+				  		$('#spec_ctr1').empty();
+				  		$(".spec_ctr").css("display","block");
+				  		$("#spec_item_ctr").css("display","none");
+				  		
+				  		layui.sessionData('table', {
+			     		  	key: 'goodsadd',
+			     		  	value: ''
+			     		});
+				  		//重新加载
+				  		$.ajax({
+							type: "POST",
+							url: "/manager/goods/spec/iteminfo",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify({"type_id":data.value, "page":1,"size":1000}),
+							success: function(data){
+								if(data.result != null) {
+									var htmlstr = '';
+									data9 = data.result;
+									for(var i=0; i < data.result.length; i++) {
+										var obj = data.result[i];
+										htmlstr = htmlstr + "<tr><td>"+obj.title+"</td><td>"
+										var lli = obj.list;
+										if(lli != null && lli.length > 0) {
+											for(var j=0; j < lli.length; j++) {
+												var obj2 = lli[j];
+												htmlstr = htmlstr + "<button class='layui-btn layui-btn-small layui-btn-primary' type='button' value='"+obj2.id+"''>"+obj2.title+"</button>";
+											}
+										}
+									}
+									if(htmlstr != '') {
+										htmlstr = htmlstr + "</td></tr>";
+										$('#spec_ctr1').append(htmlstr);
+									}
+								} else {
+									$(".spec_ctr").css("display","none");
+								}
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+				  	});
+				  	
+				  	//监听
+				  	$('#spec_ctr').delegate('button', 'click', function() {
+				  		var other = $(this);
+						if(other.hasClass('layui-btn-primary')) {
+							//点击加载规格详情
+				 			other.removeClass('layui-btn-primary');
+							
+							if(data9 != null) {
+								for(var j=0; j < data9.length; j++) {
+									var obj2 = data9[j];
+									for(var i=0; i < obj2.list.length; i++) {
+										var obj = obj2.list[i];
+										if(parseInt(other.val()) == obj.id) {
+											$('#spec_input_tab_2').append("<tr><td>"+obj.title+"</td><td>"
+													+ "<input name='prices' value='0' datatype='/^-?[1-9]+(\.\d+)?$|^-?0(\.\d+)?$|^-?[1-9]+[0-9]*(\.\d+)?$/'>"
+													+ "</td><td><input name='stocks' value='99' type='number'></td><td>"
+													+ "<input name='skus' value=''>"
+													+ "<input name='spec_key_ids' type='hidden' value="+obj.id+"></td></tr>");
+											$("#spec_item_ctr").css("display","block");
+											break;
+										}
+									}
+								}
+								
+								var session = layui.sessionData('table');
+								if(session.goodsadd != '') {
+									var rs = 1;
+									var arr2 = session.goodsadd.split(",");
+									for(var i=0; i < arr2.length; i++) {
+										if(arr2[i] != '' && parseInt(arr2[i]) == other.val()) {
+											rs = 0;
+											break;
+										}
+									}
+									
+									if(rs == 1) {
+										layui.sessionData('table', {
+							     		  	key: 'goodsadd',
+							     		  	value: session.goodsadd + ',' + other.val()
+							     		});
+									}
+								} else {
+									layui.sessionData('table', {
+						     		  	key: 'goodsadd',
+						     		  	value: other.val() + ','
+						     		});
+								}
+							}
+						} else {
+							//点击移除规格详情
+				            $(this).addClass('layui-btn-primary');
+							
+							var val = '';
+							var session = layui.sessionData('table');
+							if(session.goodsadd != '') {
+								var arr2 = session.goodsadd.split(",");
+								for(var i=0; i < arr2.length; i++) {
+									if(arr2[i] != '' && parseInt(arr2[i]) != other.val()) {
+										val = val + arr2[i]+",";
+									}
+								}
+							}
+							
+				            $('#spec_input_tab_2').empty();
+				            if(val != '') {
+				            	if(data9 != null) {
+				            		var val2 = val.split(",");
+									for(var j=0; j < data9.length; j++) {
+										var obj2 = data9[j];
+										for(var i=0; i < obj2.list.length; i++) {
+											var obj = obj2.list[i];
+											for(var z=0; z < val2.length; z++) {
+												if(parseInt(val2[z]) == obj.id) {
+													$('#spec_input_tab_2').append("<tr><td>"+obj.title+"</td><td>"
+															+ "<input name='prices' value='0' datatype='/^-?[1-9]+(\.\d+)?$|^-?0(\.\d+)?$|^-?[1-9]+[0-9]*(\.\d+)?$/'>"
+															+ "</td><td><input name='stocks' value='99' type='number'></td><td>"
+															+ "<input name='skus' value=''>"
+															+ "<input name='spec_key_ids' type='hidden' value="+obj.id+"></td></tr>");
+													$("#spec_item_ctr").css("display","block");
+													break;
+												}
+											}
+										}
+									}
+								} else {
+									$("#spec_item_ctr").css("display","none");
+								}
+				            } else {
+				            	$("#spec_item_ctr").css("display","none");
+				            }
+				            
+				            layui.sessionData('table', {
+				     		  	key: 'goodsadd',
+				     		  	value: val
+				     		});
+				        }
+					});
+				  	
+				  	//提交监听
+       				form.on('submit(OM-form-submit)', function(data){
+       		    		var field = data.field;
+       		    		
+       		    		//field.info = JSON.stringify(layedit.getContent(layedit_index));
+       		    		
+       		    		if(field.is_sale === 'on') {
+       		    			field.is_sale = 1;
+       		    		} else {
+       		    			field.is_sale = 0;
+       		    		}
+       		    		if(field.is_free === 'on') {
+       		    			field.is_free = 1;
+       		    		} else {
+       		    			field.is_free = 0;
+       		    		}
+       		    		if(field.is_top === 'on') {
+       		    			field.is_top = 1;
+       		    		} else {
+       		    			field.is_top = 0;
+       		    		}
+       		    		if(field.is_new === 'on') {
+       		    			field.is_new = 1;
+       		    		} else {
+       		    			field.is_new = 0;
+       		    		}
+       		    		if(field.is_hot === 'on') {
+       		    			field.is_hot = 1;
+       		    		} else {
+       		    			field.is_hot = 0;
+       		    		}
+       		    		if(field.is_restrict === 'on') {
+       		    			field.is_restrict = 1;
+       		    		} else {
+       		    			field.is_restrict = 0;
+       		    		}
+       		    		
+       		    		var m_slideList=new Array();
+       		    		m_slideList=$('input[name="m_slide"]').map(function(){ return $(this).val(); }).get();
+       		    		field.slide = m_slideList.join(",");
+       		    		
+       		    		var stocksList=new Array();
+       		    		stocksList=$('input[name="stocks"]').map(function(){ return $(this).val(); }).get();
+       		    		field.stocks = stocksList.join(",");
+       		    		
+       		    		var spec_key_idsList=new Array();
+       		    		spec_key_idsList=$('input[name="spec_key_ids"]').map(function(){ return $(this).val(); }).get();
+       		    		field.spec_key_ids = spec_key_idsList.join(",");
+       		    		
+       		    		var pricesList=new Array();
+       		    		pricesList=$('input[name="prices"]').map(function(){ return $(this).val(); }).get();
+       		    		field.prices = pricesList.join(",");
+       		    		
+       		    		if(!(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/.test(field.cost_price))) {
+       		    			layer.msg('成本价输入有误');
+       		    			return false;
+       		    		}
+       		    		if(!(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/.test(field.price))) {
+       		    			layer.msg('本站价输入有误');
+       		    			return false;
+       		    		}
+       		    		if(!(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/.test(field.markey_price))) {
+       		    			layer.msg('市场价输入有误');
+       		    			return false;
+       		    		}
+       		    		if(!(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/.test(field.weight))) {
+       		    			layer.msg('商品重量输入有误');
+       		    			return false;
+       		    		}
+       		    		if(!(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/.test(field.tc))) {
+       		    			layer.msg('商品提成输入有误');
+       		    			return false;
+       		    		}
+       		    		if(field.stock < 1){
+       		    			layer.msg('总库存输入有误');
+       		    			return false;
+       		    		}
+       		    		if(field.jf < 0){
+       		    			layer.msg('赠送积分输入有误');
+       		    			return false;
+       		    		}
+       		    		if(field.is_hits < 0){
+       		    			layer.msg('人气输入有误');
+       		    			return false;
+       		    		}
+       		    		if(field.restrict_unit < 0){
+       		    			layer.msg('限购数量输入有误');
+       		    			return false;
+       		    		}
+       		    		if(field.initial_sales < 0){
+       		    			layer.msg('原始销量输入有误');
+       		    			return false;
+       		    		}
+       		    		if(field.sequence < 0){
+       		    			layer.msg('排序输入有误');
+       		    			return false;
+       		    		}
+       		    		
+       		    		//提交
+       		    		$.ajax({
+       		    			type: "POST",
+       						url: "/manager/goods/article/insert",
+       						dataType:'json',//预期服务器返回的数据类型
+       						contentType: "application/json; charset=utf-8",
+       						async: true,
+       						data: JSON.stringify(field),
+       						success: function(data){
+       							//直接跳转不做任何处理且提示
+       							layer.open({
+       	                  	      	content: data.desc,
+       	                   	     	btn: ['确认'],
+       	                   	     	yes: function(index, layero) {
+       	                        		layer.close(index);
+       	                        		//刷新当前页面
+       	        			    		window.location.reload();
+       	                        	}
+       	                   	 	});
+       						}, error: function(){
+       							location.hash='/system/404';
+       						}
+       		    		});
+       		    		return false;
+       		  		});
+				});
+      		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

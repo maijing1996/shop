@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaShopPayMapper">
+	
+	<!-- 获得交易设置 -->
+	<select id="getInfo" resultType="com.shop.model.po.IdeaShopPay">
+		SELECT id, wx_pay, wx_mchid, wx_appkey, wx_notify_url, ali_appid, ali_notify_url, ali_pay, ali_private_key, ali_public_key, ali_return_url
+		FROM idea_shop_pay
+		LIMIT 0,1
+	</select>
+</mapper>

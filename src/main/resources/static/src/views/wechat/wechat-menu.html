@@ -1,0 +1,144 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>微信设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>微信菜单</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+      	<button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加菜单</button>
+      </div>
+      <table id="OM-wechat-menu" lay-filter="OM-wechat-menu"></table>
+      <script type="text/html" id="table-wechat-menu">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit-son"><i class="layui-icon layui-icon-edit"></i>查看子菜单</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="son-add"><i class="layui-icon layui-icon-edit"></i>添加子菜单</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('wechat', layui.factory('wechat')).use(['admin', 'wechat', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		form.render(null, 'layadmin-userfront-formlist');
+  
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    
+    		//执行重载
+    		table.reload('OM-wechat-menu', {
+     	 		where: field
+    		});
+  		});
+
+  		//事件
+  		var active = {
+			add: function(){
+				view('OM-module-temp').render('wechat/component/menu-add', null).done(function() {
+					//初始化
+					$(".class-info2").css("display","none");
+					//动态加载
+					form.render();
+					//事件监听
+					form.on('select(m_type)',function (datas) {
+						if(datas.value == 0) {
+							$(".class-info").css("display","block");
+							$(".class-info2").css("display","none");
+						} else {
+							$(".class-info").css("display","none");
+							$(".class-info2").css("display","block");
+						}
+				    	//动态加载
+						form.render();
+				    });
+					
+					//提交监听
+					form.on('submit(OM-form-submit)', function(data){
+			    		var field = data.field;
+			    		//校验
+			    		if(field.title === '') {
+		      				layer.msg('请填写名称');
+		      				return false;
+		      			}
+			    		
+			    		if(field.type === '') {
+			    			layer.msg('请选择类型');
+		      				return false;
+			    		} else if(field.type === '0') {
+			    			if(field.info === '') {
+			    				layer.msg('请填写链接');
+			      				return false;
+			    			}
+			    		} else if(field.type === '1') {
+			    			if(field.info2 === '') {
+			    				layer.msg('请填写关键字');
+			      				return false;
+			    			} else {
+			    				field.info = field.info2;
+			    			}
+			    		} else {
+			    			layer.msg('输入有误');
+		      				return false;
+			    		}
+			    		
+			    		if(field.sequence == '') {
+			    			layer.msg('请输入排序');
+		      				return false;
+			    		} else if(field.sequence < 1){
+			    			layer.msg('请输入正确的排序');
+		      				return false;
+			    		}
+
+			    		//提交
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/wechat/menu/insert",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: true,
+							data: JSON.stringify(field),
+							success: function(data){
+								//直接跳转不做任何处理且提示
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/wechat/wechat-menu');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+			    		return false;
+			  		});
+				});
+      		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

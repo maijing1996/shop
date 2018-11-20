@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaPersonCategoryMapper">
+
+	<!-- 获取人群分类信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.PersonCategory">
+		SELECT id, parent_id, title, wap_title, pic, slide_pic, info,keywords, description,
+			sequence, is_top, is_show, en_title, custom_url, parent_id
+		FROM idea_person_category
+		WHERE 
+			<if test="parentId == null">
+				parent_id = 0
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId}
+			</if>
+		ORDER BY sequence
+	</select>
+	
+	<!-- 获取所有的人群分类信息 -->
+	<select id="listAllInfo" resultType="com.shop.model.dto.PersonCategory">
+		SELECT ipc.id, ipc.title, ipcs.id sid, ipcs.title stitle, ipcs.parent_id
+		FROM idea_person_category ipc LEFT JOIN idea_person_category ipcs ON ipc.id = ipcs.parent_id
+		WHERE ipc.parent_id = 0
+		ORDER BY ipc.sequence
+	</select>
+	
+	<!-- 通过id 获得商品信息 -->
+	<select id="getGoodsById" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.*
+		FROM idea_person_category ipc INNER JOIN idea_goods ig ON ig.person_id = ipc.id
+			INNER JOIN idea_goods_spec_price igsp ON ig.id = igsp.goods_id
+		WHERE ig.is_delete = 0 AND ig.is_sale = 1 AND (ipc.parent_id = #{id} OR ig.person_id = #{id})
+		ORDER BY ig.sequence ASC
+	</select>
+	
+	<!-- 模糊查询 -->
+	<select id="getGoodsByKeys" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.*
+		FROM idea_goods ig INNER JOIN idea_goods_spec_price igsp ON ig.id = igsp.goods_id
+		WHERE title LIKE CONCAT('%', #{keyword}, '%') AND ig.is_delete=0 AND ig.is_sale = 1
+		ORDER BY sequence ASC
+	</select>
+</mapper>

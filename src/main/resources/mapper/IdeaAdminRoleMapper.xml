@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaAdminRoleMapper">
+
+	<!-- 获取角色信息 -->
+	<select id="listInfo" resultType="com.shop.model.po.IdeaAdminRole">
+		SELECT id, title, info, power
+		FROM idea_admin_role
+	</select>
+</mapper>

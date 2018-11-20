@@ -1,0 +1,28 @@
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<div class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑商品模型</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" datatype="*" nullmsg="请输入名称!" value="{{ d.params.title || '' }}" placeholder="请输入名称" class="layui-input">
+							</div>
+						</div>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaConfigMapper">
+
+	<!-- 获得所有地址信息 -->
+	<select id="getAllInfo" resultType="com.shop.model.po.IdeaConfig">
+		SELECT *
+		FROM idea_config
+	</select>
+	
+	<select id="getInfoById" resultType="com.shop.model.po.IdeaConfig">
+		SELECT *
+		FROM idea_config
+		WHERE id = #{id}
+	</select>
+</mapper>

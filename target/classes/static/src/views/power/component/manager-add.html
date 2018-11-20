@@ -1,0 +1,52 @@
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">添加管理员</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 用户名：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="account" datatype="*" lay-verify="required" placeholder="请输入用户名" class="layui-input">
+						</div>
+						<div id="span_info" class="layui-form-mid layui-word-aux">输入4-18位的大小写字母</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 密码：</label>
+						<div class="layui-input-inline">
+							<input type="password" name="passwd" datatype="*" recheck="passwd2" lay-verify="required" placeholder="请输入密码" class="layui-input">
+						</div>
+						<div id="span_info" class="layui-form-mid layui-word-aux">输入6-18位的大小写字母、数字</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 确认密码：</label>
+						<div class="layui-input-inline">
+							<input type="password" name="passwd2" datatype="*" recheck="passwd" lay-verify="required" placeholder="请输入确认密码" class="layui-input">
+						</div>
+						<div id="span_info" class="layui-form-mid layui-word-aux">输入6-18位的大小写字母、数字</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属角色：</label>
+						<div class="layui-input-inline">
+							<select name="role_id" id="m_role" lay-verify="required"></select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否激活：</label>
+						<div class="layui-input-block">
+							<input type="checkbox" name="is_work" lay-skin="switch" checked>
+						</div>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

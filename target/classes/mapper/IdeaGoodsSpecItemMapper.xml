@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaGoodsSpecItemMapper">
+
+	<select id="getInfo" resultType="com.shop.model.po.IdeaGoodsSpecItem">
+		SELECT igsi.*
+		FROM idea_goods_spec_item igsi INNER JOIN idea_goods_spec igs ON igs.id =igsi.spec_id
+		WHERE igs.title LIKE CONCAT('%', #{key}, '%') AND igsi.title LIKE CONCAT('%', #{key2}, '%') AND type_id = #{type}
+	</select>
+	
+	<select id="getAllInfo" resultType="com.shop.model.po.IdeaGoodsSpecItem">
+		SELECT igsi.spec_id, igsi.id, igsi.title, igs.title ftitle
+		FROM idea_goods_spec_item igsi INNER JOIN idea_goods_spec igs ON igs.id =igsi.spec_id
+		WHERE igsi.id = #{id}
+	</select>
+</mapper>

@@ -1,0 +1,198 @@
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>销售管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>会员统计</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">  
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">开始时间</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="test-laydate-normal-cn" placeholder="yyyy-MM-dd" name="startTime">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
+                <div carousel-item id="LAY-index-dataview">
+                  <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<script>
+//加载 controller 目录下的对应模块
+/*
+
+  小贴士：
+    这里 console 模块对应 的 console.js 并不会重复加载，
+    然而该页面的视图则是重新插入到容器，那如何保证能重新来控制视图？有两种方式：
+      1): 借助 layui.factory 方法获取 console 模块的工厂（回调函数）给 layui.use
+      2): 直接在 layui.use 方法的回调中书写业务代码，即:
+          layui.use('console', function(){ 
+            //同 console.js 中的 layui.define 回调中的代码 
+          });
+          
+  这里我们采用的是方式1。其它很多视图中采用的其实都是方式2，因为更简单些，也减少了一个请求数。
+  
+*/
+layui.use('console-shop', layui.factory('console-shop')).use(['admin', 'view', 'table', 'laydate'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		laydate = layui.laydate,
+  		form = layui.form;
+  
+  		form.render(null, 'layadmin-userfront-formlist');
+  		
+  		laydate.render({
+  	      	elem: '#test-laydate-normal-cn',
+  	      	type: 'datetime'
+  	    });
+  		
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    		
+    		field.date = new Date(field.startTime)/1000;
+    		console.log(JSON.stringify(field));
+    		//区块轮播切换
+    		  layui.use(['admin', 'carousel'], function(){
+    		    var $ = layui.$
+    		    ,admin = layui.admin
+    		    ,carousel = layui.carousel
+    		    ,element = layui.element
+    		    ,device = layui.device();
+
+    		    //轮播切换
+    		    $('.layadmin-carousel').each(function(){
+    		      var othis = $(this);
+    		      carousel.render({
+    		        elem: this
+    		        ,width: '100%'
+    		        ,arrow: 'none'
+    		        ,interval: othis.data('interval')
+    		        ,autoplay: othis.data('autoplay') === true
+    		        ,trigger: (device.ios || device.android) ? 'click' : 'hover'
+    		        ,anim: othis.data('anim')
+    		      });
+    		    });
+    		    
+    		    element.render('progress');
+    		    
+    		  });
+
+    		  //会员统计数据
+    		  layui.use(['carousel', 'echarts'], function(){
+    		    var $ = layui.$
+    		    ,carousel = layui.carousel
+    		    ,echarts = layui.echarts;
+    		    
+    		    var data = {};
+    		    var subtext2 = '';
+    		    //提交
+    			$.ajax({
+    				type: "POST",
+    				url: "/manager/sell/member/statistic",
+    				dataType:'json',//预期服务器返回的数据类型
+    				contentType: "application/json; charset=utf-8",
+    				async: false,
+    				data: JSON.stringify(field),
+    				success: function(data2){
+    					if(data2.code == 200) {
+    						subtext2 = "[今日新增："+ data2.today+"当前总数："+data2.total;
+    						data = data2;
+    					}
+    					data = data2;
+    				}, error: function(){
+    					location.hash='/system/404';
+    				}
+    			});
+    		    
+    		    var echartsApp = [], options = [
+    		      //今日流量趋势
+    		      {
+    		        title: {
+    		          text: '会员统计数据',
+    		          subtext: subtext2,
+    		          textStyle: {
+    		            fontSize: 14
+    		          }
+    		        },
+    		        tooltip : {
+    		          trigger: 'axis'
+    		        },
+    		        legend: {
+    		          data:['新增会员']
+    		        },
+    		        calculable : true,
+    		        xAxis : [{
+    		          type : 'category',
+    		          boundaryGap : false,
+    		          data: data.date
+    		        }],
+    		        yAxis : [{
+    		          type : 'value'
+    		        }],
+    		        series : [{
+    		          name:'新增会员',
+    		          type:'line',
+    		          smooth:true,
+    		          itemStyle: {normal: {areaStyle: {type: 'default'}}},
+    		          data: data.amount
+    		        }]
+    		      }
+    		    ]
+    		    ,elemDataView = $('#LAY-index-dataview').children('div')
+    		    ,renderDataView = function(index){
+    		      echartsApp[index] = echarts.init(elemDataView[index], layui.echartsTheme);
+    		      echartsApp[index].setOption(options[index]);
+    		      window.onresize = echartsApp[index].resize;
+    		    };
+    		    
+    		    
+    		    //没找到DOM，终止执行
+    		    if(!elemDataView[0]) return;
+    		    
+    		    renderDataView(0);
+    		    
+    		    //监听数据概览轮播
+    		    var carouselIndex = 0;
+    		    carousel.on('change(LAY-index-dataview)', function(obj){
+    		      renderDataView(carouselIndex = obj.index);
+    		    });
+    		    
+    		  });
+  		});
+	});
+</script>
+

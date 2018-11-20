@@ -1,0 +1,49 @@
+
+
+<div class="layui-fluid">
+  <div class="layui-card">
+  	<div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">标题</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" name="keys_name">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="OM-flash-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+     </div>
+    </div>
+    <div class="layui-card-body">
+      <table id="OM-flash-goods" lay-filter="OM-flash-goods"></table>
+      <script type="text/html" id="table-flash-goods">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="sel"><i class="layui-icon layui-icon-edit"></i>选择</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('popularize', layui.factory('popularize')).use(['popularize', 'table'], function(){
+  		var $ = layui.$,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		form.render(null, 'layadmin-userfront-formlist');
+  
+  		//监听搜索
+  		form.on('submit(OM-flash-search)', function(data){
+    		var field = data.field;
+    		//执行重载
+    		table.reload('OM-flash-goods', {
+     	 		where: field
+    		});
+  		});
+	});
+</script>
+  		
+  		
+  		

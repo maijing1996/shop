@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaUserPaylogMapper">
+	
+	<!-- 获得用户提现信息 -->
+	<select id="withdrawal" resultType="com.shop.model.dto.Paylog">
+		SELECT iup.id, iup.info, iup.fee, iup.account_fee, iup.add_date, iup.pay_state, iu.oauth_nickname
+		FROM idea_user_paylog iup INNER JOIN idea_user iu ON iup.user_id = iu.id
+		WHERE iup.type = 7 
+			<if test="nickName != null and nickName != ''">
+				AND iu.oauth_nickname LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+		ORDER BY iup.id DESC
+	</select>
+	
+	<!-- 获取资金明细信息和积分明细信息的接口 -->
+	<select id="listInfo" resultType="com.shop.model.dto.TradeDetails">
+		SELECT iup.id, iup.info, iup.fee, iup.account_fee, iup.add_date, iup.type, iu.oauth_nickname
+		FROM idea_user_paylog iup INNER JOIN idea_user iu ON iup.user_id = iu.id
+		WHERE (iup.type = #{type1} OR iup.type = #{type2})
+			<if test="nickName != null and nickName != ''">
+				AND iu.oauth_nickname LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+		ORDER BY iup.id DESC
+	</select>
+	
+	<!-- 获取我的积分列表 -->
+	<select id="getInfoByOpenId" resultType="com.shop.model.po.IdeaUserPaylog">
+		SELECT *
+		FROM idea_user_paylog
+		WHERE user_id = #{userId} AND (type = #{type1} OR type = #{type2})
+	</select>
+	
+	<!-- 获得分销总订单 -->
+	<select id="getCount" resultType="int">
+		SELECT COUNT(io.id)
+		FROM idea_order io INNER JOIN idea_user iu ON iu.id = io.user_id
+			INNER JOIN idea_user_paylog iup ON iu.distribution_recommend_uid = iup.user_id AND io.id = iup.order_id
+		WHERE iu.distribution_recommend_uid=#{userId} AND order_state &gt; 0 AND io.is_tc = 1
+		ORDER BY io.id DESC
+	</select>
+	
+	<!-- 获得用户信息 -->
+	<select id="getPayInfo" resultType="java.util.Map">
+		SELECT iup.type, iup.fee, iup.add_date, iu.oauth_nickname, iup.info, iup.pay_state
+		FROM idea_user_paylog iup INNER JOIN idea_user iu ON iu.id = iup.user_id
+		WHERE iu.id = #{userId} AND type IN (${type})
+		GROUP By iup.id
+	</select>
+	
+	<!-- 资金查看 -->
+	<select id="getAllByUserId" resultType="java.lang.Integer">
+		SELECT SUM(iup.fee)
+		FROM idea_user iu INNER JOIN idea_user_paylog iup ON iup.user_id = iu.id
+		WHERE iup.type = #{type} AND iup.pay_state = #{payType} AND iu.id = #{userId}
+			AND iup.add_date > iu.distribution_pass_add_time
+	</select>
+	
+	<!-- 扣除积分记录改为拒绝 -->
+	<!-- <update id="updateAll">
+		UPDATE idea_user_paylog
+		SET pay_type = -1
+		WHERE user_id = #{userId} AND order_id = #{orderId} AND type = 4
+	</update> -->
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaGoodsSpecMapper">
+
+	<!-- resultMap -->
+	<resultMap type="com.shop.model.dto.GoodsSpec" id="resMap">
+		<id column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="sequence" property="sequence"/>
+		<result column="is_search" property="is_search"/>
+		<result column="model" property="model"/>
+		<result column="type_id" property="type_id"/>
+		<collection property="list" ofType="com.shop.model.dto.Spec">
+			<id column="specId" property="specId"/>
+			<result column="spec" property="spec"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 获得所有规格信息 -->
+	<select id="listInfo" resultMap="resMap">
+		SELECT igs.id, igs.title, igs.sequence, igs.is_search, igsi.id specId, igsi.title spec, igt.title model, igs.type_id
+		FROM idea_goods_spec igs INNER JOIN idea_goods_spec_item igsi ON igs.id = igsi.spec_id
+			INNER JOIN idea_goods_type igt on igs.type_id = igt.id
+		<where>
+			<if test="typeId != null">
+				igs.type_id = #{typeId}
+			</if>
+		</where>
+		ORDER BY igs.sequence
+	</select>
+	
+	<!-- 判断相应的排序数值是否存在 -->
+	<select id="isExist" resultType="int">
+		SELECT COUNT(id)
+		FROM idea_goods_spec
+		WHERE sequence = #{sequence}
+	</select>
+	
+	<!--  -->
+	<select id="getAllInfoByGoods" resultType="com.shop.model.dto.SpecPrice">
+		SELECT igsp.id, igsp.price, igsp.sku, igsp.stock, igsi.id item_id, igs.id spec_id
+		FROM idea_goods_spec_price igsp RIGHT JOIN idea_goods_spec_item igsi ON CONVERT(igsp.mkey,SIGNED) = igsi.id
+			RIGHT JOIN idea_goods_spec igs ON igsi.spec_id = igs.id
+		WHERE igsp.goods_id = #{goodsId}
+	</select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaGoodsCategoryMapper">
+
+	<!-- 获得商品类型信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Category">
+		SELECT id, title, pic, sequence, is_top, is_show, parent_id, wap_title, slide_pic, info, keywords, description, custom_url, en_title
+		FROM idea_goods_category
+		WHERE 
+			<if test="parent_id == null">
+				parent_id = 0
+			</if>
+			<if test="parent_id != null">
+				parent_id = #{parent_id}
+			</if>
+		ORDER BY sequence
+	</select>
+	
+	<!-- 获得所有商品类型信息 -->
+	<select id="listAllInfo" resultType="com.shop.model.dto.Category">
+		SELECT igc.id, igc.title, igcs.id sid, igcs.title stitle, igcs.parent_id
+		FROM idea_goods_category igc LEFT JOIN idea_goods_category igcs ON igc.id = igcs.parent_id
+		WHERE igc.parent_id = 0
+		ORDER BY igc.sequence
+	</select>
+	
+	<!-- 排序的数值是否存在 -->
+	<select id="isExists" resultType="int">
+		SELECT COUNT(id) 
+		FROM idea_goods_category
+		WHERE sequence = #{sequence}
+	</select>
+	
+	<!-- 通过分类id 获得数据 -->
+	<select id="getGoodsById" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.*
+		FROM idea_goods_category igc INNER JOIN idea_goods ig ON ig.cat_id = igc.id
+			 INNER JOIN idea_goods_spec_price igsp ON ig.id = igsp.goods_id
+		WHERE ig.is_delete = 0 AND ig.is_sale = 1 AND (igc.parent_id = #{id} OR ig.cat_id = #{id})
+		GROUP BY ig.id
+		ORDER BY sequence ASC
+	</select>
+</mapper>

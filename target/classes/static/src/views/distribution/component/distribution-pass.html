@@ -1,0 +1,67 @@
+
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">资料审核</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label">用户名：</label>
+							<div class="layui-input-inline">
+							</div>
+							<div class="layui-form-mid layui-word-aux">{{ d.params.oauth_nickname || '' }}</div>
+						</div>
+	
+						<div class="layui-form-item">
+							<label class="layui-form-label">电话号码：</label>
+							<div class="layui-input-inline">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								{{ d.params.mobile || '' }}
+							</div>
+	
+							<label class="layui-form-label">真实姓名：</label>
+							<div class="layui-input-inline">
+							</div>
+							<div class="layui-form-mid layui-word-aux">
+								{{ d.params.real_name || '' }}
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">申请时间：</label>
+							<div class="layui-input-inline"></div>
+							<div class="layui-form-mid layui-word-aux">{{ d.params.distribution_apply_add_time || '' }}</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">报单中心：</label>
+							<div class="layui-input-inline"></div>
+							<div class="layui-form-mid layui-word-aux">
+								<select name="dcenter" id="fid"></select>
+							</div>
+							<label class="layui-form-label">备注：</label>
+							<div class="layui-input-inline"></div>
+							<div class="layui-form-mid layui-word-aux">
+								<input type="text" name="pass_note" class="layui-input" placeholder="请输入备注">
+							</div>
+						</div>
+						<input type="hidden" value="{{ d.params.id || '' }}" name="id">
+						<input type="hidden" value="{{ d.params.name || '' }}" name="level">
+						<input type="hidden" value="1" name="state">
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">通过审核</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+		
+		

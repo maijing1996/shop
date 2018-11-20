@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaAdsMapper">
+
+	<!-- 获得广告短片 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Ads">
+		SELECT id, title, url, pic, info, type, sequence, is_show
+		FROM idea_ads
+	</select>
+	
+	<!-- 获取幻灯片信息 -->
+	<select id="getShowAds" resultType="com.shop.model.po.IdeaAds">
+		SELECT id, title, url, pic, info, type, sequence, is_show
+		FROM idea_ads
+		WHERE is_show = 1 AND type = #{type}
+		ORDER BY sequence ASC
+		LIMIT 0, #{size}
+	</select>
+</mapper>

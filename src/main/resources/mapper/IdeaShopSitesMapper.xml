@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaShopSitesMapper">
+	
+	<!-- 获得多对象信息 -->
+	<select id="getInfo" resultType="com.shop.model.po.IdeaShopSites">
+		SELECT id, openid, title, logo, `name`, phone, tel, qq, keywords, description, record, pc, upsize, uptype,
+			reg_integral, default_stock, warning_stock, cash, mini_cash
+		FROM idea_shop_sites
+		LIMIT 0,1
+	</select>
+</mapper>

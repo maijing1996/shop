@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaOrderMapper">
+
+	<!-- 获得订单信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Order">
+		SELECT id, order_sn, `name`, price, pay_price, pay_type, order_state, add_date
+		FROM idea_order
+		<where>
+			<if test="startTime != null">
+				AND #{startTime} &lt; add_date
+			</if>
+			<if test="endTime != null">
+				AND #{endTime} &gt; add_date
+			</if>
+			<if test="nickName != null and nickName != ''">
+				AND `name` LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+			<if test="status != null">
+				AND #{status} = order_state
+			</if>
+		</where>
+		ORDER BY add_date DESC
+	</select>
+	
+	<!-- 获得销售详情信息 -->
+	<select id="sellDetail" resultType="com.shop.model.dto.SellDetail">
+		SELECT io.id, io.price, io.add_date, iog.amount, ig.title, ig.sn 
+		FROM idea_order_goods iog INNER JOIN idea_goods ig ON ig.id = iog.goods_id RIGHT JOIN idea_order io ON io.id = iog.order_id
+		WHERE io.order_state = 3
+			<if test="startTime != null">
+				AND #{startTime} &lt; io.add_date
+			</if>
+			<if test="endTime != null">
+				AND #{endTime} &gt; io.add_date
+			</if>
+			<if test="title != null and title != ''">
+				AND ig.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		GROUP BY io.id
+		ORDER BY io.add_date DESC
+	</select>
+	
+	<!-- 获得订单详情信息 -->
+	<select id="details" resultType="com.shop.model.dto.Order">
+		SELECT io.id, io.order_sn, io.`name`, io.price, io.pay_price, io.pay_type, io.order_state, io.add_date, io.pay_sn, io.user_id,
+			io.send_type, io.info, io.tel, io.rebate_price, io.voucher_price, io.coupon_price, io.express_price, io.discount_price,
+			io.trim_price, io.jf_price, iu.oauth_nickname nickname, io.pay_date, io.address
+		FROM idea_order io INNER JOIN idea_user iu ON iu.id = io.user_id
+		WHERE io.id = #{id}
+	</select>
+	
+	<!-- 通过订单编号获得所有信息 -->
+	<select id="getOrderBySn" resultType="com.shop.model.po.IdeaOrder">
+		SELECT *
+		FROM idea_order
+		WHERE order_sn = #{orderNo}
+	</select>
+	
+	<!-- 获得订单信息列表  -->
+	<select id="getInfoByOpenId" resultType="com.shop.model.po.IdeaOrder">
+		SELECT *
+		FROM idea_order
+		WHERE user_id = #{userId}
+			<if test="state != null">
+				AND order_state = #{state}
+			</if>
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 获得用户订单总数量 -->
+	<select id="getCount" resultType="int">
+		SELECT COUNT(id)
+		FROM idea_order
+		WHERE user_id = #{userId} AND order_state &gt; 0
+	</select>
+	
+	<!-- 我的分销订单 -->
+	<select id="getDistributionOrder" resultType="com.shop.model.dto.OrderInfo">
+		SELECT io.order_sn, io.pay_price, iup.fee tc, iu.avatar, iu.oauth_nickname nickname, FROM_UNIXTIME(io.add_date, '%Y-%m-%d') add_date, iu.note level
+		FROM idea_order io INNER JOIN idea_user iu ON iu.id = io.user_id
+			INNER JOIN idea_user_paylog iup ON iu.distribution_recommend_uid = iup.user_id AND io.id = iup.order_id
+			INNER JOIN idea_user iuf ON iuf.id = iu.distribution_recommend_uid
+		WHERE iu.distribution_recommend_uid=#{userId} AND order_state > 0 AND io.is_tc = 1 AND iup.add_date > iuf.distribution_pass_add_time
+		ORDER BY io.id DESC
+	</select>
+	
+	<!-- 我的团队订单 -->
+	<select id="listMyGroupOrder" resultType="com.shop.model.dto.OrderInfo">
+		SELECT io.id, io.order_sn, io.pay_price, iup.fee tc, iu.avatar, iu.oauth_nickname nickname, FROM_UNIXTIME(io.add_date, '%Y-%m-%d') add_date, iu.note `level`
+		FROM idea_order io INNER JOIN idea_user_paylog iup ON iup.order_id = io.id
+			INNER JOIN idea_user iu ON iu.id = io.user_id AND iu.distribution_recommend_uid != iup.user_id
+			INNER JOIN idea_user iuf ON iuf.id = iu.distribution_recommend_uid
+		WHERE iup.user_id = #{userId} AND io.order_state > 0 AND io.is_tc = 1 AND iup.type = 5 AND iup.add_date > iuf.distribution_pass_add_time
+		ORDER BY io.id DESC
+	</select>
+	
+	<!-- 获得订单的统计数量 -->
+	<select id="getOrderCount" resultType="java.util.Map">
+		SELECT order_state, COUNT(id) AS amount
+		FROM idea_order
+		WHERE user_id = #{userId} AND order_state &gt; -1 AND order_state &lt; 3
+		GROUP BY order_state
+	</select>
+	
+	<!-- 判断时候已经存在相应的订单 -->
+	<select id="verifyInfoIsNull" resultType="int">
+		SELECT COUNT(id)
+		FROM idea_order
+		WHERE pay_sn = #{wechatOrderId}
+	</select>
+	
+	<!-- 微信订单成功下单后处理 -->
+	<select id="getByOrderSn" resultType="com.shop.model.po.IdeaOrder">
+		SELECT *
+		FROM idea_order
+		WHERE order_sn = #{orderSn}
+	</select>
+	
+	<!-- 获得没有支付的订单 -->
+	<select id="getNotPayOrder" resultType="com.shop.model.po.IdeaOrder">
+		SELECT io.id, iog.amount, igsp.id specId, io.user_id, io.use_jf
+		FROM idea_order io INNER JOIN idea_order_goods iog ON iog.order_id = io.id
+			INNER JOIN idea_goods_spec_price igsp ON igsp.goods_id = iog.goods_id AND igsp.mkey = iog.spec_item
+		WHERE io.add_date &lt; (UNIX_TIMESTAMP(NOW()) - #{unpaid}) AND io.order_state = 0
+	</select>
+	
+	<!-- 获得一张商品图片 -->
+	<select id="getOneGoodsPic" resultType="java.lang.String">
+		SELECT ig.pic
+		FROM idea_order_goods iog INNER JOIN idea_goods ig ON ig.id = iog.goods_id
+		WHERE iog.order_id = #{orderId}
+		limit 0, 1
+	</select>
+	
+	<!-- 获得订单统计 -->
+	<select id="statistics" resultType="com.shop.model.dto.OrderStatic">
+		SELECT COUNT(id) amount, SUM(price) price, ROUND(SUM(price)/COUNT(id), 2) single, FROM_UNIXTIME(add_date, "%y-%m-%d") date
+		FROM idea_order
+		WHERE order_state = 1 AND add_date &gt;= #{startTime} AND add_date &lt; #{endTime}
+		GROUP BY date
+	</select>
+	
+	<!-- 获得可以自动收获的订单 -->
+	<select id="getGainGoods" resultType="com.shop.model.po.IdeaOrder">
+		SELECT id, user_id
+		FROM idea_order
+		WHERE #{shipments} > express_date
+	</select>
+</mapper>

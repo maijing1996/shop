@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaGoodsTypeMapper">
+
+	<!-- 获取商品模型信息 -->
+	<select id="listInfo" resultType="com.shop.model.po.IdeaGoodsType">
+		SELECT id, title
+		FROM idea_goods_type
+		<where>
+			<if test="title != null and title != ''">
+				title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<!--  获得选项框数值 -->
+	<select id="listOptionBox" resultType="com.shop.model.dto.OptionBox">
+		SELECT id title, title value
+		FROM idea_goods_type
+	</select>
+</mapper>

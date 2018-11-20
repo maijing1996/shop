@@ -1,0 +1,33 @@
+	
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<div class="layui-tab layui-tab-card">
+				<form class="layui-tab-content">
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 地址1：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="address_1" lay-verify="required" value="{{ d.params[0].value || '' }}" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 地址2：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="address_2" lay-verify="required" value="{{ d.params[1].value || '' }}" class="layui-input">
+							</div>
+						</div>
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+

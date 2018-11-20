@@ -1,0 +1,234 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>促销管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>限时抢购</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">促销标题</label>
+          <div class="layui-input-block">
+            <input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+      	<button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加抢购</button>
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">批量删除</button>
+      </div>
+      
+      <table id="OM-popularize-flashsale" lay-filter="OM-popularize-flashsale"></table>
+      <script type="text/html" id="imgTpl"> 
+        <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>
+      </script> 
+      <script type="text/html" id="table-popularize-flashsale">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('popularize', layui.factory('popularize')).use(['admin', 'popularize', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		form.render(null, 'layadmin-userfront-formlist');
+  
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    
+    		//执行重载
+    		table.reload('OM-popularize-flashsale', {
+     	 		where: field
+    		});
+  		});
+
+  		//事件
+  		var active = {
+			batchdel: function(){
+      			var checkStatus = table.checkStatus('OM-popularize-flashsale'),
+      			checkData = checkStatus.data; //得到选中的数据
+      			if(checkData.length === 0){
+        			return layer.msg('请选择数据');
+      			}
+
+      			//数据封装
+      			var val = '';
+      			for(var i=0; i < checkData.length; i++) {
+      				var obj =checkData[i];
+      				val = val + obj.id + ",";
+      			}
+      			var val = val.substring(0, val.length - 1);
+      			var req = {"ids": val};
+      			layer.confirm('确定删除吗？', function(index) {
+        			layer.close(index);
+	          		//执行 Ajax 后重载
+	          		$.ajax({
+						type: "POST",
+						url: "/manager/popularize/flashsale/deletes",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(req),
+						success: function(data){
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		table.reload('OM-popularize-flashsale', null);
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+        		});
+      		},
+      		add: function() {
+      			view('OM-module-temp').render('popularize/component/flash-sale-add', null).done(function() {
+      				//动态加载
+					form.render();
+      				
+					$(document).on('click','#select_goods',function(){
+						admin.popup({
+							title: '发货信息填写',
+					        area: ['800px', '500px'],
+					        id: 'OM-popup-order-add',
+					        success: function(layero, index){
+					        	view(this.id).render('popularize/component/flash-sale-goods', null).done(function(){
+					        		//商品评论
+					        		table.render({
+					        			elem: '#OM-flash-goods',
+					        			url: '/manager/popularize/flashsale/goods',
+					        			//设置表格
+					        			cols: [[
+					        				{field: 'goodsname', title: '标题'},
+					        				{field: 'cname', title: '所属分类'},
+					        				{field: 'price', title: '价格'},
+					        				{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-flash-goods'}
+					        			]],
+					        			page: true,
+					        			limit: 10,
+					        			height: 'full-320',
+					        			
+					        			//ajax
+					        			contentType: 'application/json; charset=UTF-8',
+					        			method: 'post',
+					        			request: {
+					        				limitName: 'size'
+					        			},
+					        			response: {
+					        				statusCode: 200
+					        			},
+					        			
+					        			text: '对不起，加载出现异常！'
+					        		});
+					        		
+					        		//工具条监听
+					        		table.on('tool(OM-flash-goods)', function(obj){
+					        			var data = obj.data;
+					        			if(obj.event === 'sel'){
+					        				$('#goods').val(data.goodsname);
+					        	            $('#goods_id').val(data.goods_id);
+					        	            $('#spec_key').val(data.id);
+					        	            $('#spec_name').val(data.key_name);
+					        			}
+					        			layer.close(index);
+				        				return false;
+					        		});
+					        	});
+					        }
+						});
+					});
+					
+    				//提交监听
+					form.on('submit(OM-form-submit)', function(data){
+			    		var field = data.field;
+			    		if(!(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/.test(field.price))) {
+			    			layer.msg('价钱输入有误');
+		      				return false;
+			    		}
+			    		if(field.amount < 1){
+			    			layer.msg('抢购数量输入有误');
+		      				return false;
+			    		}
+			    		if(field.per_amount < 1){
+			    			layer.msg('限购数量输入有误');
+		      				return false;
+			    		}
+			    		if(field.sequence < 0){
+			    			layer.msg('排序输入有误');
+		      				return false;
+			    		}
+			    		var now = new Date()/1000+120;
+			    		field.sale_bdate = new Date(field.sale_bdate).getTime()/1000;
+			    		field.sale_edate = new Date(field.sale_edate).getTime()/1000;
+			    		if(field.sale_bdate < now) {
+			    			layer.msg('开始时间小于现在');
+		      				return false;
+			    		} else if(field.sale_edate <= field.sale_bdate) {
+			    			layer.msg('日期输入有误');
+		      				return false;
+			    		}
+			    		
+			    		//提交
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/popularize/flashsale/insert",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(field),
+							success: function(data){
+								//直接跳转不做任何处理且提示
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/popularize/flash-sale');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+			    		return false;
+			  		});
+				});
+      		}
+  		};
+  		
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

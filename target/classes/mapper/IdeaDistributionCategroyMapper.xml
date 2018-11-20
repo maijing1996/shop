@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaDistributionCategroyMapper">
+	
+	<resultMap type="com.shop.model.dto.DistributionIdentity" id="resultMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="apply_amount" property="apply_amount"/>
+		<result column="buy_discount" property="buy_discount"/>
+		<result column="commission" property="commission"/>
+		<result column="fid" property="fid"/>
+		<result column="is_sale" property="is_sale"/>
+		<result column="is_apply" property="is_apply"/>
+		<result column="fname" property="fname"/>
+		<collection property="list" ofType="com.shop.model.po.IdeaCoupon">
+			<id column="cid" property="id"/>
+			<result column="title" property="title"/>
+			<result column="unit" property="number"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 查询分销身份管理的接口 -->
+	<select id="listInfo" resultMap="resultMap">
+		SELECT idc.id, idc.`name`, idc.commission, idc.apply_amount, idc.buy_discount, idc.is_sale, idcf.`name` fname,
+			idc.fid, ic.id cid, ic.title, idcv.unit, idc.is_apply
+		FROM idea_distribution_categroy_voucher idcv INNER JOIN idea_coupon ic ON ic.id = idcv.vid
+			RIGHT JOIN idea_distribution_categroy idc ON idcv.cid = idc.id
+			LEFT JOIN idea_distribution_categroy idcf ON idc.fid = idcf.id
+		ORDER BY idc.id
+	</select>
+	
+	<!-- 获取分销商列表 -->
+	<select id="listInfoByUserId" resultType="com.shop.model.po.IdeaDistributionCategroy">
+		SELECT *
+		FROM idea_distribution_categroy
+		WHERE is_apply = 1
+	</select>
+</mapper>

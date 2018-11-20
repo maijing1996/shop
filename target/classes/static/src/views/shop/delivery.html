@@ -1,0 +1,208 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商城设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>配送设置</cite></a>
+  </div>
+</div>
+
+<script type="text/html" template lay-url="/manager/shop/delivery/info" lay-type="post" lay-done="layui.data.done(d);">
+	<div class="layui-main layui-form">
+		<div class="layui-body-ctr">
+			<div class="layui-ctt1">
+				<div class="layui-tab layui-tab-card">
+					<ul class="layui-tab-title">
+						<li class="layui-this">配送设置</li>
+					</ul>
+					<div class="layui-tab-content">
+						<input name="id" value="{{ d.data.id || '' }}" type="hidden">
+						<div class="layui-form-item">
+							<label class="layui-form-label">快递开关：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="express_switch" lay-filter="express_switch">
+									{{# if(d.data.express_switch == 1) { }}
+										<option value="1" selected>开启</option>
+										<option value="0">关闭</option>
+									{{# } else { }}
+										<option value="1">开启</option>
+										<option value="0" selected>关闭</option>
+									{{#} }}
+								</select>
+							</div>
+						</div>
+
+						<div class="span_express">
+							<div class="layui-form-item">
+								<label class="layui-form-label">首重重量：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<select name="first_weight" lay-filter="first_weight" id="first_weight"></select>
+								</div>
+								<div class="layui-form-mid layui-word-aux">KG</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 首重价格：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" name="first_price" datatype="n" nullmsg="请输入首重价格!" errormsg="首重价格不为数字!" placeholder="请输入首重价格" value="{{ d.data.first_price || '0' }}" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">元</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">续重重量：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<select name="second_weight" lay-filter="second_weight" id="second_weight"></select>
+								</div>
+								<div class="layui-form-mid layui-word-aux">KG</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 续重价格：</label>
+								<div class="layui-input-inline" style="width: 120px;">
+									<input type="text" name="second_price" datatype="n" nullmsg="请输入续重价格!" errormsg="续重价格不为数字!" placeholder="请输入续重价格" value="{{ d.data.second_price || '0' }}" class="layui-input">
+								</div>
+								<div class="layui-form-mid layui-word-aux">元</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">自提开关：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="pickup" lay-filter="m_pickup">
+									{{# if(d.data.pickup == 1) { }}
+										<option value="1" selected>开启</option>
+										<option value="0">关闭</option>
+									{{# } else { }}
+										<option value="1">开启</option>
+										<option value="0" selected>关闭</option>
+									{{#} }}
+								</select>
+							</div>
+						</div>
+
+						<div class="span_pickup">
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 自提点联系人：</label>
+								<div class="layui-input-inline" style="width: 200px;">
+									<input type="text" name="pickup_name" datatype="*" nullmsg="请输入联系人!" placeholder="请输入联系人" value="{{ d.data.pickup_name || '' }}" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 联系人手机：</label>
+								<div class="layui-input-inline" style="width: 200px;">
+									<input type="text" name="pickup_tel" datatype="m" nullmsg="请输入手机号!" errormsg="手机号码不正确!" placeholder="请输入手机号" value="{{ d.data.pickup_tel || '' }}" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label"><span>*</span> 自提点地址：</label>
+								<div class="layui-input-inline" style="width: 350px;">
+									<input type="text" name="pickup_addr" datatype="*" nullmsg="请输入自提点地址!" placeholder="请输入自提点地址" value="{{ d.data.pickup_addr || '' }}" class="layui-input">
+								</div>
+							</div>
+					    </div>
+	
+						<div class="layui-form-item" style="border: 0;">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script>
+	layui.use('order', layui.factory('order')).use(['admin', 'order', 'table'], function(){
+		var $ = layui.$,
+		admin = layui.admin,
+		view = layui.view,
+		table = layui.table,
+		form = layui.form;
+
+		//监听事件
+		form.on('select(express_switch)', function(data){
+			if(data.value == 1) {
+				$(".span_express").css("display","block");
+			} else {
+				$(".span_express").css("display","none");
+			}
+		});
+		form.on('select(m_pickup)', function(data){
+			if(data.value == 1) {
+				$(".span_pickup").css("display","block");
+			} else {
+				$(".span_pickup").css("display","none");
+			}
+		});
+		
+		//
+		form.on('submit(OM-form-submit)', function(data){
+			var field = data.field;
+			//初始化
+			$.ajax({
+				type: "POST",
+				url: "/manager/shop/delivery/update",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				data: JSON.stringify(field),
+				success: function(data){
+					layer.open({
+	          	      	content: data.desc,
+	           	     	btn: ['确认'],
+	           	     	yes: function(index, layero) {
+	                		layer.close(index);
+	                		//刷新当前页面
+				    		window.location.reload();
+	                	}
+	           	 	});
+				}, error: function(){
+					location.hash='/system/404';
+				}
+			});
+			return false;
+		});
+	});
+
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+		layui.use(['admin', 'table','form'], function(){
+			var $ = layui.$,
+	  		admin = layui.admin,
+	  		form = layui.form;
+			
+			var obj = d.data;
+			var arr = ['0.5', '1', '2', '5', '10', '20',];
+			
+			for(var i=0; i < 6; i++) {
+				if(obj.first_weight == arr[i]) {
+					$("#first_weight").append("<option value="+arr[i]+" selected>"+arr[i]+"</option>");
+				} else {
+					$("#first_weight").append("<option value="+arr[i]+">"+arr[i]+"</option>");
+				}
+				
+				if(obj.second_weight == arr[i]) {
+					$("#second_weight").append("<option value="+arr[i]+" selected>"+arr[i]+"</option>");
+				} else {
+					$("#second_weight").append("<option value="+arr[i]+">"+arr[i]+"</option>");
+				}
+			}
+			
+			if(obj.express_switch == 1) {
+				$(".span_express").css("display","block");
+			} else {
+				$(".span_express").css("display","none");
+			}
+			if(obj.pickup == 1) {
+				$(".span_pickup").css("display","block");
+			} else {
+				$(".span_pickup").css("display","none");
+			}
+			
+			//重载页面
+	     	form.render();
+		});
+	};
+</script>

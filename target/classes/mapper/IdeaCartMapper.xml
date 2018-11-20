@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaCartMapper">
+	
+	<!-- 获取购物车列表 -->
+	<select id="getCartDetails" resultType="com.shop.model.dto.wechat.Cart">
+		SELECT ic.add_date, ic.amount, ic.goods_id, ic.id, pic, ic.price, ic.session_id, ic.shop_id, ic.spec_key,
+			ic.spec_key_name, ig.stock, ig.title, ic.user_id, ig.price yprice
+		FROM idea_cart ic INNER JOIN idea_goods ig ON ic.goods_id = ig.id
+		WHERE ic.session_id = #{openId}
+	</select>
+	
+	<!-- 查询用户的购物车 -->
+	<select id="getCart" resultType="com.shop.model.po.IdeaCart">
+		SELECT id, user_id, session_id, goods_id, spec_key, spec_key_name, shop_id, price, amount, add_date
+		FROM idea_cart 
+		WHERE goods_id = #{goodsId} AND spec_key_name = #{keyName} AND spec_key = #{specKey} AND session_id = #{openId}
+	</select>
+</mapper>

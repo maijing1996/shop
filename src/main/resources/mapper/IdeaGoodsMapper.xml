@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaGoodsMapper">
+
+	<!-- 获得商品信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Goods">
+		SELECT ig.*, igc.title category, ipc.title person
+		FROM idea_goods ig INNER JOIN idea_goods_category igc ON ig.cat_id = igc.id
+			INNER JOIN idea_person_category ipc ON ipc.id = ig.person_id
+		WHERE ig.is_jf = #{type}
+		<if test="keys != null and keys != ''">
+			AND ig.title LIKE CONCAT('%', #{keys},'%')
+		</if>
+		<if test="cat_id != null">
+			AND ig.cat_id LIKE CONCAT('%', #{cat_id},'%')
+		</if>
+	</select>
+	
+	<!-- 判断相应的排序数值是否存在 -->
+	<select id="isExist" resultType="int">
+		SELECT COUNT(id)
+		FROM idea_goods
+		WHERE sequence = #{sequence}
+	</select>
+	
+	<!-- 获得销售排行信息 -->
+	<select id="getSellRanking" resultType="com.shop.model.dto.SellDetail">
+		SELECT SUM(iog.price) price, COUNT(iog.amount) amount, ig.title, ig.sn, ROUND(SUM(iog.price)/COUNT(iog.amount), 2) ave
+		FROM idea_goods ig LEFT JOIN idea_order_goods iog ON ig.id = iog.goods_id INNER JOIN idea_order io ON io.id = iog.order_id
+		WHERE io.order_state = 3
+			<if test="startTime != null">
+				AND #{startTime} &lt; io.add_date
+			</if>
+			<if test="endTime != null">
+				AND #{endTime} &gt; io.add_date
+			</if>
+			<if test="nickName != null and nickName != ''">
+				AND ig.title LIKE CONCAT('%', #{nickName}, '%')
+			</if>
+			<if test="status != null">
+				AND #{status} = io.order_state
+			</if>
+		GROUP BY ig.id
+		ORDER BY amount DESC
+	</select>
+	
+	<!-- 猜你喜欢商品接口 -->
+	<select id="guessGoods" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.*
+		FROM idea_goods ig INNER JOIN idea_goods_spec_price igsp ON ig.id = igsp.goods_id
+		WHERE ig.is_delete=0 AND ig.is_sale = 1
+	</select>
+	
+	<!-- 获得指定条数的新品或非新品信息信息 -->
+	<select id="getNewGoods" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.*
+		FROM idea_goods ig INNER JOIN idea_goods_spec_price igsp ON ig.id = igsp.goods_id
+		WHERE is_delete=0 AND is_new=#{type} AND ig.is_delete=0 AND ig.is_sale = 1
+		LIMIT 0,#{size}
+		ORDER BY sequence ASC
+	</select>
+	
+	<!-- 综合排行，按兑换次数排行 -->
+	<select id="getPopularity" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.*, COUNT(icg.id) amount
+		FROM idea_goods ig LEFT JOIN idea_cash_goods icg ON ig.id = icg.goods_id
+		WHERE is_delete=0 AND is_sale=1 AND is_jf=1
+		GROUP BY ig.id
+		ORDER BY amount DESC
+	</select>
+	
+	<!-- 查询人群分类关联商品 -->
+	<select id="info" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.* 
+		FROM idea_goods ig LEFT JOIN idea_person_category ipc ON  ig.person_id = ipc.id
+		WHERE ig.is_delete = 0 AND ig.is_index = 1 AND ipc.parent_id = #{person_id}
+	</select>
+	
+	<!-- 通过订单Id 获得订单中所有的商品 -->
+	<select id="getAllByOrderId" resultType="java.util.Map">
+		SELECT igsp.id, igsp.stock, iog.amount
+		FROM idea_order_goods iog INNER JOIN idea_goods_spec_price igsp ON iog.goods_id = igsp.goods_id AND iog.spec_item = igsp.mkey
+		WHERE iog.order_id = #{orderId}
+	</select>
+	
+	<!-- 获得限时抢购项目的商品剩余可购买的数量 -->
+	<select id="buyGoodsAmount" resultType="int">
+		SELECT IFNULL(ig.restrict_unit,0) - COUNT(iog.amount) val
+		FROM idea_order io INNER JOIN idea_order_goods iog ON io.id = iog.order_id
+			INNER JOIN idea_goods ig ON ig.id = iog.goods_id
+		WHERE io.user_id = #{userId} AND ig.is_restrict = 1 AND ig.id = #{id} AND io.order_state != -1
+	</select>
+	
+	<!--  -->
+	<select id="getCategroy" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.id, ig.title, ig.is_index
+		FROM idea_goods ig INNER JOIN idea_goods_category igc ON igc.id = ig.cat_id
+		WHERE (igc.id = #{catId} OR igc.parent_id = #{catId}) AND ig.is_sale = 1
+		GROUP BY ig.id
+	</select>
+	
+	<!--  -->
+	<select id="getPerson" resultType="com.shop.model.po.IdeaGoods">
+		SELECT ig.id, ig.title, ig.is_index
+		FROM idea_goods ig INNER JOIN idea_person_category ipc ON ipc.id = ig.person_id
+		WHERE (ipc.id = #{personId} OR ipc.parent_id = #{personId}) AND ig.is_sale = 1
+		GROUP BY ig.id
+	</select>
+</mapper>

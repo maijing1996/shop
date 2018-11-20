@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaUserVoucherMapper">
+
+	<!-- 获取已领取未使用的代金券列表 -->
+	<select id="getVoucher" resultType="java.util.Map">
+		SELECT iv.id, iv.amount
+		FROM idea_user_voucher iuv INNER JOIN idea_voucher iv ON iuv.vid = iv.id
+		WHERE iuv.is_use = 0 AND uid = #{userId}
+	</select>
+	
+	<!-- 获取代金券名称，已领取未使用的代金券列表 -->
+	<select id="getVoucherName" resultType="java.util.Map">
+		SELECT iv.name
+		FROM idea_user_voucher iuv INNER JOIN idea_voucher iv ON iuv.vid = iv.id
+		WHERE iuv.is_use = 0 AND uid = #{userId}
+	</select>
+	
+	<!-- 获得我的代金券 -->
+	<select id="listVoucher" resultType="java.util.Map">
+		SELECT iv.id, iv.`name`, FROM_UNIXTIME(iuv.use_time, '%Y年%m月%d') use_time, iuv.is_use
+		FROM idea_user_voucher iuv INNER JOIN idea_voucher iv ON iuv.vid = iv.id
+		WHERE iuv.is_use = 0 AND uid = #{userId} AND iv.is_sale = 1 AND iuv.is_use = 0
+	</select>
+</mapper>

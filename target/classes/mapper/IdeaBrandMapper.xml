@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaBrandMapper">
+
+	<!-- 获取品牌信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Brand">
+		SELECT id, title, info, sequence, is_show, is_top, pic
+		FROM idea_brand
+		<where>
+			<if test="title != null and title != ''">
+				title LIKE CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询排序数值是否存在 -->
+	<select id="isExists" resultType="int">
+		SELECT COUNT(id)
+		FROM idea_brand
+		WHERE sequence = #{number}
+		<if test="id != null">
+			 AND id != #{id}
+		</if>
+	</select>
+</mapper>

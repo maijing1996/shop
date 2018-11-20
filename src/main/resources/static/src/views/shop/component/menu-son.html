@@ -1,0 +1,22 @@
+
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-card-body">
+      <table id="OM-shop-menu-son" lay-filter="OM-shop-menu-son"></table>
+      <script type="text/html" id="imgTpl"> 
+		{{# if(d.ico != '') { }}
+      	<i class="iconfont">&{{d.ico}}</i>
+		{{# } else { }}
+
+		{{# } }}
+      </script> 
+      <script type="text/html" id="table-shop-menu-son">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		{{# if(d.type == "用户菜单") { }}
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+		{{# } }}
+      </script>
+    </div>
+  </div>
+</div>

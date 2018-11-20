@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaOrderGoodsMapper">
+
+	<!-- 根据订单Id获得商品信息 -->
+	<select id="getOrderGoods" resultType="com.shop.model.dto.OrderGoods">
+		SELECT iog.amount, iog.price, iog.rebate_price, iog.total_price, igsi.title spec_item, ig.title, ig.sn 
+		FROM idea_order_goods iog INNER JOIN idea_goods ig ON ig.id = iog.goods_id
+			INNER JOIN idea_goods_spec_item igsi ON igsi.id = cast(iog.spec_item as SIGNED INTEGER)
+		WHERE iog.order_id = #{orderId}
+	</select>
+</mapper>

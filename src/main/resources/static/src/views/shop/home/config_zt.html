@@ -1,0 +1,46 @@
+
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<form class="layui-ctt">
+			<button type="button" class="layui-btn layui-btn-small layui-btn-normal" id="create_zt"><i class="layui-icon">&#xe61f;</i> 添加专题模块</button>
+			<table class="layui-table">
+				<colgroup>
+					<col width="15%">
+					<col width="8%">
+					<col width="8%">
+					<col width="15%">
+				</colgroup>
+				<thead>
+				<tr>
+					<th>模块名称</th>
+					<th>图片</th>
+					<th>跳转</th>
+					<th>类型</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<script type="text/html" template>
+					{{# layui.each(d.params, function(index, item){ }}
+					<tr>
+						<td>{{ item.title || '' }}</td>
+						<td>{{ item.pic || '' }}</td>
+						<td>{{ item.url || '' }}</td>
+						<td>{{ item.pic_type || '' }}</td>
+						<td>
+							<input type="button" class="layui-btn layui-btn-small layui-btn-normal" lay-submit lay-filter="OM-form-submit-edit" value="编辑" data-type={{ item.id || '' }}>
+							<input type="button" class="layui-btn layui-btn-small layui-btn-danger" lay-submit lay-filter="OM-form-submit-del" value="删除" data-type={{ item.id || '' }}>
+						</td>
+					</tr>
+					{{# }); }}
+				</script>
+				</tbody>
+			</table>
+		</form>
+		<div class="layui-ctt" id="page"></div>
+	</div>
+</div>
+		
+		
+		

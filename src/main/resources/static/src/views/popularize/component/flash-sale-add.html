@@ -1,0 +1,96 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">添加抢购</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 标题：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" lay-verify="required" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">限购活动标题</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 选择商品：</label>
+						<div class="layui-input-inline" style="width: 400px;">
+							<input type="text" id="goods" name="goods" lay-verify="required" class="layui-input" readonly>
+							<input type="hidden" id="goods_id" name="goods_id" value="0">
+							<input type="hidden" id="spec_key" name="spec_key" value="">
+							<input type="hidden" id="spec_name" name="spec_name" value="">
+						</div>
+						<button class="layui-btn" type="button" id="select_goods">点击选择</button>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 抢购价格：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<input type="text" name="price" lay-verify="required" value="0.00" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">元，可精确两位小数</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 抢购数量：</label>
+						<div class="layui-input-inline" style="width: 80px;">
+							<input type="text" name="amount" lay-verify="required" value="10" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">参与活动的商品总量</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 限购数量：</label>
+						<div class="layui-input-inline" style="width: 80px;">
+							<input type="text" name="per_amount" lay-verify="required" value="1" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">每人能购买的数量</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 开始时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="sale_bdate" lay-verify="required" class="layui-input" id="test-laydate-normal-cn" readonly>
+						</div>
+						<div class="layui-form-mid layui-word-aux">时间跨度要大于2小时</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 结束时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="sale_edate" lay-verify="required" class="layui-input" id="test-laydate-normal-cn2" readonly>
+						</div>
+						<div class="layui-form-mid layui-word-aux">时间跨度要大于2小时</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">排序：</label>
+						<div class="layui-input-inline" style="width: 80px;">
+							<input type="number" name="sequence" value="1" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use('laydate', function(){
+		var $ = layui.$,
+		laydate = layui.laydate;
+
+		laydate.render({
+	      	elem: '#test-laydate-normal-cn',
+	      	type: 'datetime'
+	    });
+		laydate.render({
+	      	elem: '#test-laydate-normal-cn2',
+	      	type: 'datetime'
+	    });
+	});
+</script>

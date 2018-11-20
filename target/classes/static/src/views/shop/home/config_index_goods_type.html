@@ -1,0 +1,52 @@
+
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<form class="layui-ctt">
+			<button type="button" class="layui-btn layui-btn-small layui-btn-normal" id="add_goods"><i class="layui-icon">&#xe61f;</i> 添加商品模块</button>
+			<table class="layui-table">
+				<colgroup>
+					<col width="15%">
+					<col width="8%">
+					<col width="8%">
+					<col width="15%">
+				</colgroup>
+				<thead>
+				<tr>
+					<th>大类类型</th>
+					<th>商品类型</th>
+					<th>栏目标题</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<script type="text/html" template>
+					{{# layui.each(d.params, function(index, item){ }}
+					<tr>
+						<td>
+							{{# if(item.b_type == 2) { }}
+								人群分类
+							{{# } else { }}
+								商品分类
+							{{# } }}
+						</td>
+						<td>
+							{{ item.value || '' }}
+						</td>
+						<td>
+							{{ item.title || '' }}
+						</td>
+						<td>
+							<button class="layui-btn layui-btn-small layui-btn-normal" lay-submit lay-filter="OM-form-submit-edit" data-type={{ item.id || '' }}>编辑</button>
+							<button class="layui-btn layui-btn-small layui-btn-danger" lay-submit lay-filter="OM-form-submit-del" data-type={{ item.id || '' }}>删除</button>
+						</td>
+					</tr>
+					{{# }); }}
+				</script>
+				</tbody>
+			</table>
+		</form>
+		<div class="layui-ctt" id="page"></div>
+	</div>
+</div>
+

@@ -1,0 +1,57 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<input type="hidden" name="type" value="3">
+				<ul class="layui-tab-title">
+					<li class="layui-this">基本内容</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+					    <label class="layui-form-label">图片：</label>
+					    <div class="layui-input-inline">
+					      	<script type="text/html" template>
+        						<input type="text" name="pic" value="" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input">
+      						</script>
+					    </div>
+					    <button type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button> 
+					    <button class="layui-btn layui-btn-normal" type="button" onclick="layer.open({type: 1,shade: false,title: false, content: $('#pic')});">预览</button>
+					    <span style="display:none;" id="pic"><img id="pic2" src=""></span>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+	
+
+<script>
+	layui.use(['admin', 'form', 'upload'], function(){
+ 	 	var $ = layui.$,
+  		form = layui.form,
+  		upload = layui.upload;
+  
+  		//上传头像
+  		upload.render({
+    		elem: '#layuiadmin-upload-useradmin',
+    		url: '/upload',
+    		accept: 'images',
+    		method: 'get',
+    		acceptMime: 'image/*',
+    		done: function(res){
+    			console.log(res);
+      			$(this.item).prev("div").children("input").val(res.url);
+      			$("#pic2").attr("src",res.file);
+      			//动态加载
+    			form.render();
+    		}
+  		});
+	})
+</script>

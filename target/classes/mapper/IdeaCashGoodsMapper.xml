@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaCashGoodsMapper">
+	
+	<!-- 获得最新的兑换信息，在前端展示作用 -->
+	<select id="getShowInfo" resultType="com.shop.model.po.IdeaCashGoods">
+		SELECT iu.oauth_nickname nickname, ig.title goods_name, icg.amount
+		FROM idea_cash_goods icg INNER JOIN idea_goods ig ON ig.id = icg.goods_id
+			INNER JOIN idea_user iu ON iu.id = icg.user_id
+		ORDER BY icg.id DESC
+		LIMIT 0, #{size}
+	</select>
+</mapper>

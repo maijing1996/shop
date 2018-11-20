@@ -1,0 +1,63 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">添加关键词</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 名称：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" datatype="*" nullmsg="请输入名称!" placeholder="请输入名称" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">触发类型：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="trigger_type" lay-filter="m_trigger_type">
+								<option value="0">关键词回复</option>
+								<option value="1">关注后回复</option>
+							</select>
+						</div>
+						<div class="layui-form-mid layui-word-aux">在什么情况下回复</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">回复类型：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="reply_type" lay-filter="m_reply_type">
+								<option value="0">文本内容</option>
+								<option value="1">海报图片</option>
+							</select>
+						</div>
+						<div class="layui-form-mid layui-word-aux">回复什么内容</div>
+					</div>
+
+					<div id="span_keys" class="layui-form-item cla2">
+						<label class="layui-form-label">关键词：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="keyword" placeholder="请输入关键词" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">多个请用,隔开</div>
+					</div>
+
+					<div id="span_info" class="layui-form-item cla">
+						<label class="layui-form-label">文本内容：</label>
+						<div class="layui-input-block">
+							<textarea name="info" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

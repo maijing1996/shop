@@ -1,0 +1,114 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>文章管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>文章分类</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加分类</button>
+      </div>
+      <table id="OM-article-categroy" lay-filter="OM-article-categroy"></table>
+      <script type="text/html" id="table-article-categroy">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="sel-son"><i class="layui-icon layui-icon-form"></i>查看子类</a>
+		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="add-son"><i class="layui-icon layui-icon-form"></i>添加子类</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('article', layui.factory('article')).use(['admin', 'article', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		//事件
+  		var active = {
+  			add: function(){
+ 				view('OM-module-temp').render('article/component/category-add', null).done(function() {
+ 					//动态加载
+ 					form.render();
+ 					
+ 					//提交监听
+					form.on('submit(OM-form-submit)', function(data){
+			    		var field = data.field;
+			    		//校验
+			    		if(field.title === '') {
+		      				layer.msg('请填写名称');
+		      				return false;
+		      			}
+			    		
+			    		if(field.wap_title === '') {
+			    			layer.msg('请填写英文名称');
+		      				return false;
+			    		}
+			    		
+			    		if(field.sequence == '') {
+			    			layer.msg('请输入排序');
+		      				return false;
+			    		} else if(field.sequence < 1){
+			    			layer.msg('请输入正确的排序');
+		      				return false;
+			    		}
+
+			    		if(field.is_top === 'on') {
+			    			field.is_top = 1;
+			    		} else {
+			    			field.is_top = 0;
+			    		}
+			    		
+			    		if(field.is_show === 'on') {
+			    			field.is_show = 1;
+			    		} else {
+			    			field.is_show = 0;
+			    		}
+			    		//提交
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/article/categroy/insert",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(field),
+							success: function(data){
+								//直接跳转不做任何处理且提示
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/article/categroy');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+			    		return false;
+			  		});
+ 				});
+      		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

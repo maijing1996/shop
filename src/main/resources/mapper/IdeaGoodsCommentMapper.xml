@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaGoodsCommentMapper">
+
+	<!-- 查询商品评论的的接口 -->
+	<select id="listInfo" resultType="com.shop.model.dto.Comment">
+		SELECT igc.id, igc.info, igc.is_show, igc.add_date, ig.title, iu.oauth_nickname uid, io.order_sn
+		FROM idea_goods_comment igc INNER JOIN idea_goods ig ON ig.id = igc.goods_id
+			INNER JOIN idea_user iu ON iu.id = igc.user_id
+			INNER JOIN idea_order io ON io.id = igc.order_id
+		<where>
+			<if test="uid != null and uid !=''">
+				iu.uid LIKE CONCAT('%', #{uid}, '%')
+			</if>
+		</where>
+		ORDER BY igc.id DESC
+	</select>
+</mapper>

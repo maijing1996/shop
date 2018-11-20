@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaAdminMenuMapper">
+
+	<resultMap type="com.shop.model.dto.MenuPackage" id="resMap">
+		<id column="num" property="num"/>
+		<result column="nickname" property="nickname"/>
+		<collection property="list" ofType="com.shop.model.dto.Menus">
+			<id column="id" property="id"/>
+			<result column="title" property="title"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.shop.model.dto.Menu" id="menu">
+		<!-- <id column="num" property="num"/> -->
+		<result column="title" property="title"/>
+		<result column="name" property="name"/>
+		<result column="icon" property="icon"/>
+		<result column="is_turn" property="is_turn"/>
+		<collection property="list" ofType="com.shop.model.dto.MenuDetails">
+			<!-- <id column="id" property="id"/> -->
+			<result column="title2" property="title"/>
+			<result column="name2" property="name"/>
+			<result column="jump" property="jump"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 查询后台菜单模块信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.AdminMenu">
+		SELECT iam.id, iam.parent_id, iam.title, iam.controller, iam.operation, iam.parameter, iam.ico, iam.sequence, iam.type,
+			iam.is_turn, iam.is_show, iamf.title parent_name
+		FROM idea_admin_menu iam LEFT JOIN idea_admin_menu iamf ON iam.parent_id = iamf.id
+		WHERE
+			<if test="parentId != null">
+				iam.parent_id = #{parentId}
+			</if>
+			<if test="parentId == null">
+				iam.parent_id = 0
+			</if>
+		ORDER BY iam.sequence ASC
+	</select>
+	
+	<!-- 获得菜单列表 -->
+	<select id="menu" resultMap="resMap">
+		SELECT idm.id num, idm.title nickname, idms.id, idms.title
+		FROM idea_admin_menu idm INNER JOIN idea_admin_menu idms ON idm.id = idms.parent_id
+		ORDER BY idm.sequence ASC, idms.sequence ASC
+	</select>
+	
+	<!-- 获得菜单列表 -->
+	<select id="getMenu" resultMap="menu">
+		SELECT idm.title, idm.controller `name`, idm.ico icon, idms.title title2, CONCAT(idm.controller,'/',idms.controller) jump,
+			idms.controller name2, idm.is_turn
+		FROM idea_admin_menu idm LEFT JOIN idea_admin_menu idms ON idm.id = idms.parent_id AND idms.is_show = 1
+		WHERE idm.is_show = 1 AND idm.parent_id = 0
+		ORDER BY idm.sequence ASC, idms.sequence ASC, idms.id ASC
+	</select>
+	
+	<!-- 获得菜单列表，非超级管理员 -->
+	<select id="getMenu2" resultMap="menu">
+		SELECT idm.title, idm.controller `name`, idm.ico icon, idms.title title2, CONCAT(idm.controller,'/',idms.controller) jump,
+			idms.controller name2, idm.is_turn
+		FROM idea_admin_menu idm LEFT JOIN idea_admin_menu idms ON idm.id = idms.parent_id AND idms.is_show = 1
+		WHERE idm.is_show = 1 AND idm.parent_id = 0 AND idms.id IN ( ${ids} )
+		ORDER BY idm.sequence ASC, idms.sequence ASC, idms.id ASC
+	</select>
+</mapper>

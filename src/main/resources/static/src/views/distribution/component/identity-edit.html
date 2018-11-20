@@ -1,0 +1,132 @@
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑分销身份</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label">上级身份：</label>
+						<div class="layui-form-mid">
+							<select name="fid" id="fid"></select>
+						</div>
+					</div>
+					<script type="text/html" template>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 身份名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="name" value="{{ d.params.name || '' }}" datatype="*" nullmsg="请输入名称!" placeholder="请输入名称" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 获取佣金的比例：</label>
+							<div class="layui-input-inline">
+								<input type="number" name="commission" value="{{ d.params.commission || '' }}" datatype="*" nullmsg="请输入佣金的比例!" placeholder="例如:20%" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 申请该分销商所需的金额：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="apply_amount" value="{{ d.params.apply_amount || '' }}" datatype="*" nullmsg="请输入所需的金额!" placeholder="例如:20000" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 购买商品的折扣：</label>
+							<div class="layui-input-inline">
+								<input type="number" name="buy_discount" value="{{ d.params.buy_discount || '' }}" datatype="*" nullmsg="请输入购买商品的折扣!" placeholder="百分比，例如:7.2" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item" id="coupon">
+							<label class="layui-form-label" style="width: 150px;"><span>*</span> 通过后获得的代金券：</label>
+							<div class="layui-col-md6">
+								<table class="layui-table" lay-size="lg">
+									<thead>
+										<tr>
+											<td>代金券</td>
+											<td>赠送数量</td>
+										</tr>
+									</thead>
+									<tbody>
+									{{# layui.each(d.params.coupon, function(index, item){ }}
+										{{# if(item.param){ }}
+											<tr>
+												<td>
+													<label class="layui-form-label">{{item.title || '' }}</label>
+													<input name="m_voucher" type="checkbox" style="width:200px;" lay-skin="primary" value="{{item.id || '' }}" checked>
+												</td>
+												<td>
+													<input type="text" name="{{item.id || '' }}" style="width:200px;" value="{{item.number || '0' }}" placeholder="填写数量" class="layui-input">
+												</td>
+											</tr>
+										{{#} else { }}
+											<tr>
+												<td>
+													<label class="layui-form-label">{{item.title || '' }}</label>
+													<input name="m_voucher" type="checkbox" style="width:200px;" lay-skin="primary" value="{{item.id || '' }}">
+												</td>
+												<td>
+													<input type="text" name="{{item.id || '' }}" style="width:200px;" value="{{item.number || '' }}" placeholder="填写数量" class="layui-input">
+												</td>
+											</tr>
+										{{# } }}
+									{{# }); }}
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<table class="layui-table">
+							<tr>
+								<td>推荐开通身份</td>
+								<td>对应奖励金</td>
+							</tr>
+							{{# layui.each(d.params.comm, function(index, item){ }}
+								<tr>
+									<td>{{item.target_name}}</td>
+									<td>
+										<input type="text" value="{{item.price || '0' }}" name="price" class="layui-input">
+									</td>
+									<input type="hidden" value="{{item.id || '' }}" name="ids">
+								</tr>
+							{{#}); }}
+						</table>
+						<div class="layui-form-item">
+							<label class="layui-form-label">是否启用：</label>
+							<div class="layui-input-block">
+								{{# if(d.params.is_sale == '关闭'){ }}
+									<input type="checkbox" name="is_sale" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_sale" lay-skin="switch" checked>
+								{{#} }}
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">是否可申请：</label>
+							<div class="layui-input-block">
+								{{# if(d.params.is_apply == 0){ }}
+									<input type="checkbox" name="is_apply" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_apply" lay-skin="switch" checked>
+								{{#} }}
+							</div>
+						</div>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+		
+		

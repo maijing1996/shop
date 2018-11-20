@@ -1,0 +1,397 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商城设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>消息设置</cite></a>
+  </div>
+</div>
+
+<script type="text/html" template lay-url="/manager/shop/message/info" lay-type="post" lay-done="layui.data.done(d);">
+	<div class="layui-main layui-form">
+		<div class="layui-body-ctr">
+			<div class="layui-ctt1">
+				<form class="layui-tab layui-tab-card">
+					<ul class="layui-tab-title">
+						<li class="layui-this">消息设置</li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-form-item">
+							<label class="layui-form-label">微信消息：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="wx_msg" lay-filter="wx_msg" id="wx_msg"></select>
+							</div>
+						</div>
+						<div class="span_wx">
+							<div class="layui-form-item">
+								<label class="layui-form-label">通知模板ID：</label>
+								<div class="layui-input-inline" style="width: 385px;">
+									<input type="text" name="wx_notice" placeholder="请输入管理员通知模板ID" class="layui-input" value="{{ d.data.wx_notice || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">下单等操作后给管理员发信息</div>
+							</div>
+							
+							<div class="layui-form-item">
+								<label class="layui-form-label">使用场景：</label>
+								<div class="layui-input-block">
+									{{# if(d.data.wx_scene_one == 1) { }}
+										<input type="checkbox" lay-filter="ck11" value="1" name="wx_scene_one" title="充值成功" checked>
+									{{# } else { }}
+										<input type="checkbox" lay-filter="ck11" value="0" name="wx_scene_one" title="充值成功">
+									{{# } }}
+									
+									{{# if(d.data.wx_scene_two == 1) { }}
+										<input type="checkbox" lay-filter="ck12" value="1" name="wx_scene_two" title="下单成功" checked>
+									{{# } else { }}
+										<input type="checkbox" lay-filter="ck12" value="0" name="wx_scene_two" title="下单成功">
+									{{# } }}
+									
+									{{# if(d.data.wx_scene_three == 1) { }}
+										<input type="checkbox" lay-filter="ck13" value="1" name="wx_scene_three" title="发货成功" checked>
+									{{# } else { }}
+										<input type="checkbox" lay-filter="ck13" value="0" name="wx_scene_three" title="发货成功">
+									{{# } }}
+								</div>
+							</div>
+							
+							<div class="layui-form-item mb11">
+								<label class="layui-form-label">充值模板ID：</label>
+								<div class="layui-input-inline" style="width: 385px;">
+									<input type="text" name="wx_scene_one_id" placeholder="请输入充值成功模板ID" class="layui-input" value="{{ d.data.wx_scene_one_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">微信公众平台中设置查询</div>
+							</div>
+							<div class="layui-form-item mb12">
+								<label class="layui-form-label">下单模板ID：</label>
+								<div class="layui-input-inline" style="width: 385px;">
+									<input type="text" name="wx_scene_two_id" placeholder="请输入下单成功模板ID" class="layui-input" value="{{ d.data.wx_scene_two_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">微信公众平台中设置查询</div>
+							</div>
+							<div class="layui-form-item mb13">
+								<label class="layui-form-label">发货模板ID：</label>
+								<div class="layui-input-inline" style="width: 385px;">
+									<input type="text" name="wx_scene_three_id" placeholder="请输入发货成功模板ID" class="layui-input" value="{{ d.data.wx_scene_three_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">微信公众平台中设置查询</div>
+							</div>
+					    </div>
+	
+						<div class="layui-form-item">
+							<label class="layui-form-label">短信消息：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="sms_msg" lay-filter="sms_msg" id="sms_msg"></select>
+							</div>
+							<div class="layui-form-mid layui-word-aux">使用腾讯云短信接口</div>
+						</div>
+						
+						<div class="span_sms">
+							<div class="layui-form-item">
+								<label class="layui-form-label">SDK AppID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_app_id" placeholder="请输入SDK AppID" class="layui-input" value="{{ d.data.sms_app_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">添加应用后点击查看</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">APP Key：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_app_key" placeholder="请输入APP Key" class="layui-input" value="{{ d.data.sms_app_key || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">添加应用后点击查看</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">短信签名：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_sign" placeholder="请输入短信签名" class="layui-input" value="{{ d.data.sms_sign || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">文本短信中创建</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">通知模板ID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_notice" placeholder="请输入管理员通知模板ID" class="layui-input" value="{{ d.data.sms_notice || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">下单等操作后给管理员发信息</div>
+							</div>
+							
+							<div class="layui-form-item">
+								<label class="layui-form-label">使用场景：</label>
+								<div class="layui-input-block">
+									{{# if(d.data.sms_scene_one == 1) { }}
+										<input type="checkbox" lay-filter="ck21" value="1" name="sms_scene_one" title="充值成功" checked>
+									{{# } else { }}
+										<input type="checkbox" lay-filter="ck21" value="0" name="sms_scene_one" title="充值成功">
+									{{# } }}
+									
+									{{# if(d.data.sms_scene_two == 1) { }}
+										<input type="checkbox" lay-filter="ck22" value="1" name="sms_scene_two" title="下单成功" checked>
+									{{# } else { }}
+										<input type="checkbox" lay-filter="ck22" value="0" name="sms_scene_two" title="下单成功">
+									{{# } }}
+									
+									{{# if(d.data.sms_scene_three == 1) { }}
+										<input type="checkbox" lay-filter="ck23" value="1" name="sms_scene_three" title="发货成功" checked>
+									{{# } else { }}
+										<input type="checkbox" lay-filter="ck23" value="0" name="sms_scene_three" title="发货成功">
+									{{# } }}
+								</div>
+							</div>
+							<div class="layui-form-item mb21">
+								<label class="layui-form-label">充值模板ID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_scene_one_id" placeholder="请输入充值成功模板ID" class="layui-input" value="{{ d.data.sms_scene_one_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">短信平台中设置查询</div>
+							</div>
+							<div class="layui-form-item mb22">
+								<label class="layui-form-label">下单模板ID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_scene_two_id" placeholder="请输入下单成功模板ID" class="layui-input" value="{{ d.data.sms_scene_two_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">短信平台中设置查询</div>
+							</div>
+							<div class="layui-form-item mb23">
+								<label class="layui-form-label">发货模板ID：</label>
+								<div class="layui-input-inline">
+									<input type="text" name="sms_scene_three_id" placeholder="请输入发货成功模板ID" class="layui-input" value="{{ d.data.sms_scene_three_id || '' }}">
+								</div>
+								<div class="layui-form-mid layui-word-aux">短信平台中设置查询</div>
+							</div>
+						</div>
+						<input name="id" value="{{ d.data.id || '' }}" type="hidden">
+						<div class="layui-form-item" style="border: 0;">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</script>
+
+
+<script>
+	layui.use(['admin', 'table', 'upload'], function(){
+		var $ = layui.$,
+		admin = layui.admin,
+		view = layui.view,
+		table = layui.table,
+		upload = layui.upload,
+		form = layui.form;
+		
+		//全局变量
+		var num11=-1, num12=-1, num13=-1, num21=-1, num22=-1, num23=-1;
+		
+		//监听事件
+  		form.on('select(wx_msg)', function(data){
+  			if(data.value == 1) {
+				$(".span_wx").css("display","block");
+			} else {
+				$(".span_wx").css("display","none");
+			}
+		});  
+  		form.on('select(sms_msg)', function(data){
+  			if(data.value == 1) {
+				$(".span_sms").css("display","block");
+			} else {
+				$(".span_sms").css("display","none");
+			}
+		});
+  		
+  		form.on('checkbox(ck11)', function(data){
+  			if(num11 === -1) {
+  				num11 = data.value;
+  			} else {
+  				num11++;
+  			}
+  			var val = num11%2;
+  			if(val == 0) {
+				$(".mb11").css("display","block");
+			} else {
+				$(".mb11").css("display","none");
+			}
+		});  
+  		form.on('checkbox(ck12)', function(data){
+  			if(num12 === -1) {
+  				num12 = data.value;
+  			} else {
+  				num12++;
+  			}
+  			var val = num12%2;
+  			if(val == 0) {
+				$(".mb12").css("display","block");
+			} else {
+				$(".mb12").css("display","none");
+			}
+		});  
+  		form.on('checkbox(ck13)', function(data){
+  			if(num13 === -1) {
+  				num13 = data.value;
+  			} else {
+  				num13++;
+  			}
+  			var val = num13%2;
+  			if(val == 0) {
+				$(".mb13").css("display","block");
+			} else {
+				$(".mb13").css("display","none");
+			}
+		});
+  		
+  		form.on('checkbox(ck21)', function(data){
+  			if(num21 === -1) {
+  				num21 = data.value;
+  			} else {
+  				num21++;
+  			}
+  			var val = num21%2;
+  			if(val == 0) {
+				$(".mb21").css("display","block");
+			} else {
+				$(".mb21").css("display","none");
+			}
+		});  
+  		form.on('checkbox(ck22)', function(data){
+  			if(num22 === -1) {
+  				num22 = data.value;
+  			} else {
+  				num22++;
+  			}
+  			var val = num22%2;
+  			if(val == 0) {
+				$(".mb22").css("display","block");
+			} else {
+				$(".mb22").css("display","none");
+			}
+		});  
+  		form.on('checkbox(ck23)', function(data){
+  			if(num23 === -1) {
+  				num23 = data.value;
+  			} else {
+  				num23++;
+  			}
+  			var val = num23%2;
+  			if(val == 0) {
+				$(".mb23").css("display","block");
+			} else {
+				$(".mb23").css("display","none");
+			}
+		});  
+		
+		//监听提交
+		form.on('submit(OM-form-submit)', function(data){
+			var field = data.field;
+			if(field.wx_scene_one == 'on') {
+				field.wx_scene_one = 1;
+			} else {
+				field.wx_scene_one = 0;
+			}
+			if(field.wx_scene_two == 'on') {
+				field.wx_scene_two = 1;
+			} else {
+				field.wx_scene_two = 0;
+			}
+			if(field.wx_scene_three == 'on') {
+				field.wx_scene_three = 1;
+			} else {
+				field.wx_scene_three = 0;
+			}
+			
+			if(field.sms_scene_one == 'on') {
+				field.sms_scene_one = 1;
+			} else {
+				field.sms_scene_one = 0;
+			}
+			if(field.sms_scene_two == 'on') {
+				field.sms_scene_two = 1;
+			} else {
+				field.sms_scene_two = 0;
+			}
+			if(field.sms_scene_three == 'on') {
+				field.sms_scene_three = 1;
+			} else {
+				field.sms_scene_three = 0;
+			}
+			
+			//初始化
+			$.ajax({
+				type: "POST",
+				url: "/manager/shop/message/update",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				data: JSON.stringify(field),
+				success: function(data){
+					layer.open({
+	          	      	content: data.desc,
+	           	     	btn: ['确认'],
+	           	     	yes: function(index, layero) {
+	                		layer.close(index);
+	                		//刷新当前页面
+				    		window.location.reload();
+	                	}
+	           	 	});
+				}, error: function(){
+					location.hash='/system/404';
+				}
+			});
+			return false;
+		});
+	});
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+	  	layui.use(['form'], function(){
+	    	var form = layui.form;
+	    	var obj = d.data;
+	    	//选择情况
+	    	if(obj.wx_msg == 1) {
+	    		$("#wx_msg").append("<option value='1' selected>开启</option>"
+						+"<option value='0'>关闭</option>");
+	    	} else {
+	    		$(".span_wx").css("display","none");
+	    		$("#wx_msg").append("<option value='1'>开启</option>"
+						+"<option value='0' selected>关闭</option>");
+	    	}
+	    	
+	    	if(obj.sms_msg == 1) {
+	    		$("#sms_msg").append("<option value='1' selected>开启</option>"
+						+"<option value='0'>关闭</option>");
+	    	} else {
+	    		$(".span_sms").css("display","none");
+	    		$("#sms_msg").append("<option value='1'>开启</option>"
+						+"<option value='0' selected>关闭</option>");
+	    	}
+	    	
+	    	if(obj.wx_scene_one === 0) {
+	    		$(".mb11").css("display","none");
+	    	}
+	    	if(obj.wx_scene_two === 0) {
+	    		$(".mb12").css("display","none");
+	    	}
+	    	if(obj.wx_scene_three === 0) {
+	    		$(".mb13").css("display","none");
+	    	}
+	    	
+	    	if(obj.sms_scene_one === 0) {
+	    		$(".mb21").css("display","none");
+	    	}
+	    	if(obj.sms_scene_two === 0) {
+	    		$(".mb22").css("display","none");
+	    	}
+	    	if(obj.sms_scene_three === 0) {
+	    		$(".mb23").css("display","none");
+	    	}
+	    	
+	    	//
+	     	form.render();
+	  	});
+	};
+</script>
+
+

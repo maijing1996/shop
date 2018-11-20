@@ -1,0 +1,116 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">添加优惠券</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 名称：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="title" lay-verify="required" placeholder="请输入名称" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 优惠额：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="yh_price" lay-verify="required" placeholder="请输入优惠额" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">元</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 最小订单额：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="min_price" lay-verify="required" placeholder="请输入最小订单额" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">元，订单满这么多才可使用</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 发放数量：</label>
+						<div class="layui-input-inline">
+							<input type="number" name="amount" value="1" lay-verify="required" placeholder="请输入发放数量" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">请填写整数</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 发放开始时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="send_bdate" id="test-laydate-normal-cn" lay-verify="required" placeholder="请选择发放开始时间" class="layui-input" readonly>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 发放结束时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="send_edate" id="test-laydate-normal-cn2" lay-verify="required" placeholder="请选择发放结束时间" class="layui-input" readonly>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 使用开始时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="use_bdate" id="test-laydate-normal-cn3" lay-verify="required" placeholder="请选择使用开始时间" class="layui-input" readonly>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 使用结束时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="use_edate" id="test-laydate-normal-cn4" lay-verify="required" placeholder="请选择使用结束时间" class="layui-input" readonly>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span>使用有效期：</label>
+						<div class="layui-input-inline">
+							<input type="number" name="validity" value="0" placeholder="请输入有效天数，按天数计算的卡券有效，可不填" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">单位：天数</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">发放类型：</label>
+						<div class="layui-input-block">
+							<input type="radio" name="type" value="0" title="下单赠送" checked>
+							<input type="radio" name="type" value="1" title="指定发放">
+							<input type="radio" name="type" value="2" title="免费领取">
+							<input type="radio" name="type" value="3" title="线下发放">
+							<input type="radio" name="type" value="4" title="分销获得">
+							<input type="radio" name="type" value="5" title="新人礼券">
+						</div>
+					</div>
+
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use('laydate', function(){
+		var $ = layui.$,
+		laydate = layui.laydate;
+
+		laydate.render({
+	      	elem: '#test-laydate-normal-cn',
+	      	type: 'datetime'
+	    });
+		laydate.render({
+	      	elem: '#test-laydate-normal-cn2',
+	      	type: 'datetime'
+	    });
+		laydate.render({
+	      	elem: '#test-laydate-normal-cn3',
+	      	type: 'datetime'
+	    });
+		laydate.render({
+	      	elem: '#test-laydate-normal-cn4',
+	      	type: 'datetime'
+	    });
+	});
+</script>
+
+

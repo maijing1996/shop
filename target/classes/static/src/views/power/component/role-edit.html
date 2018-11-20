@@ -1,0 +1,54 @@
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑管理员角色</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template>
+						<input name="id" value="{{ d.params.id || '' }}" type="hidden">
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 角色名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" lay-verify="required" datatype="*" nullmsg="请输入名称!" placeholder="请输入名称" class="layui-input" value="{{ d.params.title || '' }}">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">角色描述：</label>
+							<div class="layui-input-block">
+								<textarea name="info" placeholder="请输入描述" class="layui-textarea">{{ d.params.title || '' }}</textarea>
+							</div>
+						</div>
+					</script>
+					<div class="layui-form-item">
+						<label class="layui-form-label">管理权限：</label>
+						<script type="text/html" template>
+							{{# layui.each(d.params.result, function(index, item) { }}
+								<div class="layui-input-block">
+									<div class="m_ctr">
+										{{# layui.each(item.list, function(index2, item2) { }}
+											{{# if(item2.ioc) { }}
+												<input type="checkbox" name="m_power" lay-skin="primary" title="{{ item2.title || '' }}" value="{{ item2.id || '' }}" checked/>
+											{{# } else { }}
+												<input type="checkbox" name="m_power" lay-skin="primary" title="{{ item2.title || '' }}" value="{{ item2.id || '' }}"/>
+											{{# } }}
+										{{# d.params.ioc=false; }) }}
+									</div>
+								</div>
+							{{# }) }}
+					    </script>
+					</div>
+				</div>
+
+				<input type="hidden" name="m_id" value="{$data.id}">
+				<div class="layui-form-item" style="border: 0;">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

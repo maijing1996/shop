@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaAdminLogMapper">
+	
+	<!-- 获得日志信息 -->
+	<select id="listInfo" resultType="com.shop.model.dto.AdminLog">
+		SELECT id, uid, log_info, log_ip, log_url, log_state, add_date
+		FROM idea_admin_log
+		<where>
+			<if test="state != null">
+				log_type = #{state}
+			</if>
+		</where>
+		ORDER BY add_date DESC
+	</select>
+</mapper>

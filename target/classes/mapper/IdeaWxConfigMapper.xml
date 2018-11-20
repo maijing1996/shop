@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.mapper.IdeaWxConfigMapper">
+
+	<!-- 获得微信配置信息 -->
+	<select id="getInfo" resultType="com.shop.model.po.IdeaWxConfig">
+		SELECT id, service_url, title, token, appid, app_secret, qr_code
+		FROM idea_wx_config
+		LIMIT 0,1
+	</select>
+</mapper>

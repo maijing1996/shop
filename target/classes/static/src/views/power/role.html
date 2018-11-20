@@ -1,0 +1,147 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>权限管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>管理员角色</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">批量删除</button>
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+      </div>
+      
+      <table id="OM-system-role" lay-filter="OM-system-role"></table>
+      <script type="text/html" id="table-toolbar-role">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('system', layui.factory('system')).use(['admin', 'system', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+
+  		//事件
+  		var active = {
+    		batchdel: function(){
+      			var checkStatus = table.checkStatus('OM-system-role'),
+      			checkData = checkStatus.data; //得到选中的数据
+      		
+      			if(checkData.length === 0){
+        			return layer.msg('请选择数据');
+      			}
+      			//数据封装
+      			var val = '';
+      			for(var i=0; i < checkData.length; i++) {
+      				var obj =checkData[i];
+      				val = val + obj.id + ",";
+      			}
+      			var val = val.substring(0, val.length - 1);
+      			var req = {"ids": val};
+      		
+        		layer.confirm('确定删除吗？', function(index) {
+        			layer.close(index);
+	          		//执行 Ajax 后重载
+	          		$.ajax({
+						type: "POST",
+						url: "/manager/role/deletes",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(req),
+						success: function(data){
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		table.reload('OM-system-role', null);
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+        		});
+      		},
+      		add: function(){
+      			var data = '';
+      			//执行 Ajax 后重载
+          		$.ajax({
+					type: "POST",
+					url: "/manager/role/menu",
+					dataType:'json',//预期服务器返回的数据类型
+					contentType: "application/json; charset=utf-8",
+					async: false,
+					data: JSON.stringify("{}"),
+					success: function(res){
+						data = res;
+					}, error: function(){
+						location.hash='/system/404';
+					}
+	    		});
+    			view('OM-module-temp').render('power/component/role-add', data).done(function() {
+    				//动态加载
+					form.render();
+					//提交监听
+					form.on('submit(OM-form-submit)', function(data2){
+						var field = data2.field;
+						
+						//获取checkbox[name='like']的值
+			            var arr = new Array();
+			            $("input:checkbox[name='m_power']:checked").each(function(i){
+			                arr[i] = $(this).val();
+			            });
+			           	field.power = arr.join(",");//将数组合并成字符串
+			
+						//提交
+			    		$.ajax({
+			    			type: "POST",
+							url: "/manager/role/insert",
+							dataType:'json',//预期服务器返回的数据类型
+							contentType: "application/json; charset=utf-8",
+							async: false,
+							data: JSON.stringify(field),
+							success: function(data){
+								//直接跳转不做任何处理且提示
+								layer.open({
+		                  	      	content: data.desc,
+		                   	     	btn: ['确认'],
+		                   	     	yes: function(index, layero) {
+		                        		layer.close(index);
+		                        		//刷新当前页面
+		        			    		window.location.reload();
+		        			    		//修改路径，防止由于url 问题无法跳转的情况
+		        	    				window.history.pushState(null, null, '/start/index.html#/power/role');
+		                        	}
+		                   	 	});
+							}, error: function(){
+								location.hash='/system/404';
+							}
+			    		});
+			    		return false;
+					});
+				});
+      		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>

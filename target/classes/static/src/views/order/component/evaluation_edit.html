@@ -1,0 +1,65 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">查看评论</li>
+				</ul>
+				<script type="text/html" template>
+					<div class="layui-tab-content">
+						<div class="layui-form-item">
+							<label class="layui-form-label">用户昵称：</label>
+							<div class="layui-input-block">
+							    <div class="layui-form-mid layui-word-aux">{{ d.params.uid || '' }}</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">所属订单：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid layui-word-aux">
+									<div id="order_id">{{ d.params.order_sn || '' }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">商品名称：</label>
+							<div class="layui-input-block">
+								<div class="layui-form-mid layui-word-aux">
+									<div>{{ d.params.title || '' }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">评论内容：</label>
+							<div class="layui-input-block">
+								<textarea name="info" readonly class="layui-textarea">{{ d.params.info || '' }}</textarea>
+							</div>
+						</div>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否显示：</label>
+						<div class="layui-input-block">
+							<script type="text/html" template>
+								{{# if(d.params.is_show == '否'){ }}
+									<input type="checkbox" name="is_show" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_show" lay-skin="switch" checked>
+								{{#} }}
+							</script>
+						</div>
+					</div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+

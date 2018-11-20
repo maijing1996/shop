@@ -1,0 +1,89 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">编辑菜单</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属菜单：</label>
+						<div class="layui-form-mid">顶级菜单</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 菜单名称：</label>
+						<div class="layui-input-inline">
+							<script type="text/html" template>
+								<input type="text" name="title" datatype="*" nullmsg="请输入名称!" value="{{ d.params.title || '' }}" placeholder="请输入名称" class="layui-input">
+							</script>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">响应类型：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="type" lay-filter="m_type" id="m_type"></select>
+						</div>
+					</div>
+
+					<div class="layui-form-item class-info">
+						<label class="layui-form-label">
+							<span>*</span>
+							<span id="t_info" style="color: #333;">链接地址：</span>
+						</label>
+						<div class="layui-input-inline">
+							<script type="text/html" template>
+								<input type="text" id="m_info" name="info" datatype="*" value="{{ d.params.info || '' }}" placeholder="请输入链接地址" class="layui-input">
+							</script>
+						</div>
+						<div id="span_info" class="layui-form-mid layui-word-aux">必须包含http://</div>
+					</div>
+					
+					<div class="layui-form-item class-info2">
+						<label class="layui-form-label">
+							<span>*</span>
+							<span id="t_info" style="color: #333;">关键词：</span>
+						</label>
+						<div class="layui-input-inline">
+							<script type="text/html" template>
+								<input type="text" id="m_info" name="info2" datatype="*" value="{{ d.params.info || '' }}" placeholder="请输入关键词" class="layui-input">
+							</script>
+						</div>
+						<div id="span_info" class="layui-form-mid layui-word-aux">设置后到微信回复中设置动作</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 排序：</label>
+						<div class="layui-input-inline" style="width: 80px;">
+							<script type="text/html" template>
+								<input type="number" name="sequence" datatype="n" nullmsg="请输入排序!" errormsg="排序不为数字!" value="{{ d.params.sequence || '' }}" class="layui-input">
+							</script>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否显示：</label>
+						<div class="layui-input-block">
+							<script type="text/html" template>
+								{{# if(d.params.is_show == 0){ }}
+									<input type="checkbox" name="is_show" lay-skin="switch">
+								{{#} else { }}
+									<input type="checkbox" name="is_show" lay-skin="switch" checked>
+								{{#} }}
+							</script>
+						</div>
+					</div>
+					<script type="text/html" template>
+						<input type="hidden" name="parent_id" value="{{ d.params.parent_id || '' }}">
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

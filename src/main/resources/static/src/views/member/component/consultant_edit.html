@@ -1,0 +1,46 @@
+
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<form class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">会员服务顾问修改</li>
+				</ul>
+				<div class="layui-tab-content">
+					<script type="text/html" template>
+						<input type="hidden" name="id" value="{{ d.params.id || '' }}">
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span>会员名称：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.oauth_nickname || '' }}" class="layui-input" readonly>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span>绑定分销商：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.real_name || '无' }}{{ d.params.name || '' }}" class="layui-input" readonly>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span>分销等级：</label>
+							<div class="layui-input-inline">
+								<input type="text" value="{{ d.params.sname || '无' }}" class="layui-input" readonly>
+								<input type="hidden" value="{{ d.params.lev || '' }}" name="lev" class="layui-input" readonly>
+							</div>
+						</div>
+					</script>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">同意绑定</button>
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit2">清除绑定</button>
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit-reset">清除推荐信息</button>
+						</div>
+					</div>
+					<div><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+

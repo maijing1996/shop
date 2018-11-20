@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.mapper.IdeaDcenterMapper">
+	
+	<!-- 查询报单中心的接口 -->
+	<select id="listInfo" resultType="com.shop.model.po.IdeaDcenter">
+		SELECT id, NAME
+		FROM idea_dcenter
+		ORDER BY id
+	</select>
+	
+	<!--  根据id查询报单数据 -->
+	<select id="isEmpty" resultType="int">
+		SELECT COUNT(id) 
+		FROM idea_dcenter 
+		WHERE name = #{name}
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="deleteByUserId">
+		DELETE FROM idea_dcenter
+		WHERE user_id = #{userId}
+	</delete>
+</mapper>

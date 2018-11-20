@@ -1,0 +1,202 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>商城设置</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>交易设置</cite></a>
+  </div>
+</div>
+
+<script type="text/html" template lay-url="/manager/shop/transaction/info" lay-type="post" lay-done="layui.data.done(d);">
+<div class="layui-main layui-form">
+	<div class="layui-body-ctr">
+		<div class="layui-ctt1">
+			<div class="layui-tab layui-tab-card" id="OM-transaction-temp">
+				<ul class="layui-tab-title">
+					<li class="layui-this">交易设置</li>
+				</ul>
+				<div class="layui-tab-content">
+					<input name="id" value="{{ d.data.id || '' }}" type="hidden">
+					<div class="layui-form-item">
+						<label class="layui-form-label"><span>*</span> 满多少免邮：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<input type="text" name="full_cut" datatype="num" nullmsg="请输入免邮额!" errormsg="免邮额不为数字!" placeholder="请输入免邮额" value="{{ d.data.full_cut || '' }}" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">订单满这么多后免邮</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">下单未支付：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="unpaid" id="unpaid"></select>
+						</div>
+						<div class="layui-form-mid layui-word-aux">可后台关闭订单</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">发货成功：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="shipments" id="shipments"></select>
+						</div>
+						<div class="layui-form-mid layui-word-aux">后自动收货</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开启积分兑换：</label>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="integral_exchange" lay-filter="integral_exchange" id="integral_exchange2"></select>
+						</div>
+					</div>
+					<div id="span_exchange" class="displ">
+						<div class="layui-form-item">
+							<label class="layui-form-label">积分兑换比例：</label>
+							<div class="layui-input-block">
+								{{# if(d.data.stock_reduce_time == 1) { }}
+									<input type="radio" name="integral_exchange_proportion" value="1" title="1积分 = 1元" checked>
+									<input type="radio" name="integral_exchange_proportion" value="10" title="10积分 = 1元">
+									<input type="radio" name="integral_exchange_proportion" value="100" title="100积分 = 1元">
+								{{# } else if(d.data.stock_reduce_time == 10) { }}
+									<input type="radio" name="integral_exchange_proportion" value="1" title="1积分 = 1元">
+									<input type="radio" name="integral_exchange_proportion" value="10" title="10积分 = 1元"checked>
+									<input type="radio" name="integral_exchange_proportion" value="100" title="100积分 = 1元">
+								{{# } else { }}
+									<input type="radio" name="integral_exchange_proportion" value="1" title="1积分 = 1元">
+									<input type="radio" name="integral_exchange_proportion" value="10" title="10积分 = 1元">
+									<input type="radio" name="integral_exchange_proportion" value="100" title="100积分 = 1元"checked>
+								{{# } }}
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 最低使用积分：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" name="mini_integral" datatype="n" nullmsg="请输入最低使用积分!" errormsg="最低使用积分不为数字!" placeholder="请输入最低积分" value="{{ d.data.mini_integral || '' }}" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">最少要这么多积分后才可以使用</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label"><span>*</span> 积分使用比例：</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" name="use_ratio_integral" datatype="n" nullmsg="请输入使用比例!" errormsg="使用比例不为数字!" placeholder="积分使用比例" value="{{ d.data.use_ratio_integral || '' }}" class="layui-input">
+							</div>
+							<div class="layui-form-mid layui-word-aux">如：50 表示可以用积分抵扣一个订单不超过50%的金额</div>
+						</div>
+				    </div>
+					<div class="layui-form-item" style="border: 0;">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit lay-filter="OM-form-submit">立即提交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script>
+	layui.use(['admin', 'table'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form;
+  
+  		form.render();
+  		
+  		//监听事件
+  		form.on('select(integral_exchange)', function(data){
+  			if(data.value == 1) {
+				$(".displ").css("display","block");
+			} else {
+				$(".displ").css("display","none");
+			}
+		});  
+  		
+		form.on('submit(OM-form-submit)', function(data){
+			var field = data.field;
+			//初始化
+			$.ajax({
+    			type: "POST",
+				url: "/manager/shop/transaction/update",
+				dataType:'json',//预期服务器返回的数据类型
+				contentType: "application/json; charset=utf-8",
+				async: true,
+				data: JSON.stringify(field),
+				success: function(data){
+					layer.open({
+              	      	content: data.desc,
+               	     	btn: ['确认'],
+               	     	yes: function(index, layero) {
+                    		layer.close(index);
+                    		//刷新当前页面
+    			    		window.location.reload();
+                    	}
+               	 	});
+				}, error: function(){
+					location.hash='/system/404';
+				}
+    		});
+			return false;
+		});
+	});
+
+	
+	//渲染该模板下的动态表单
+	layui.data.done = function(d){
+		layui.use(['admin', 'table','form'], function(){
+			var $ = layui.$,
+	  		admin = layui.admin,
+	  		form = layui.form;
+			
+			var obj = d.data;
+			var arr = ['30','30分钟','60','1小时','1440','1天','2880','2天','4320','3天'];
+			for(var i=0; i < arr.length; i=i+2) {
+				if(arr[i] == obj.unpaid) {
+					$("#unpaid").append("<option value="+arr[i]+" selected>"+arr[i+1]+"</option>");
+				} else {
+					$("#unpaid").append("<option value="+arr[i]+">"+arr[i+1]+"</option>");
+				}
+			}
+			
+			for(var i=1; i < 16; i++) {
+				if(obj.shipments == i) {
+					$("#shipments").append("<option value="+i+" selected>"+i+"天</option>");
+				} else {
+					$("#shipments").append("<option value="+i+">"+i+"天</option>");
+				} 
+			}
+			
+			if(obj.integral_exchange == 1) {
+				$(".displ").css("display","block");
+				$("#integral_exchange2").append("<option value='1' selected>开启</option>"
+						+"<option value='0'>关闭</option>");
+			} else {
+				$(".displ").css("display","none");
+	  			$("#integral_exchange2").append("<option value='1'>开启</option>"
+						+"<option value='0' selected>关闭</option>");
+			}
+			
+			//重载页面
+	     	form.render();
+		});
+	};
+</script>
+
+<!-- 
+
+<div class="layui-form-item">
+	<label class="layui-form-label">减库存时间：</label>
+	<div class="layui-input-block">
+		{{# if(d.data.stock_reduce_time == 1) { }}
+			<input type="radio" name="stock_reduce_time" value="1" title="下单成功后" checked>
+			<input type="radio" name="stock_reduce_time" value="2" title="发货后">
+		{{# } else { }}
+			<input type="radio" name="stock_reduce_time" value="1" title="下单成功后">
+			<input type="radio" name="stock_reduce_time" value="2" title="发货后" checked>
+		{{# } }}
+	</div>
+</div>
+	
+ -->
+

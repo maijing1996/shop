@@ -1,0 +1,152 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a>主页</a>
+    <a><cite>订单管理</cite></a>
+    <a href="javascript:;" layadmin-event="refresh"><cite>商品列表</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid" id="OM-module-temp">
+  <div class="layui-card">  
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-userfront-formlist">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">开始时间</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="test-laydate-normal-cn" placeholder="yyyy-MM-dd" name="startTime">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">结束时间</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="test-laydate-normal-cn2" placeholder="yyyy-MM-dd" name="endTime">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">收件人</label>
+          <div class="layui-input-block">
+            <input type="text" name="nickName" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">订单状态</label>
+          <div class="layui-input-block">
+            <select name="state">
+              <option value="">所有状态</option>
+              <option value="1">等代付款</option>
+              <option value="2">已经付款</option>
+              <option value="3">已经发货</option>
+              <option value="4">交易完成</option>
+              <option value="-1">取消订单</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-user-front-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">批量删除</button>
+      </div>
+      
+      <table id="OM-order-list" lay-filter="OM-order-list"></table>
+      <script type="text/html" id="table-order-list">
+      	{{# if(d.order_state == -1){ }}
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-select"></i>删除订单</a>
+        {{# } else { }}
+        	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-select"></i>查看订单</a>
+		{{# } }}        	
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+	layui.use('order', layui.factory('order')).use(['admin', 'order', 'table', 'laydate'], function(){
+  		var $ = layui.$,
+  		admin = layui.admin,
+  		view = layui.view,
+  		table = layui.table,
+  		form = layui.form,
+  		laydate = layui.laydate;
+  
+  		form.render(null, 'layadmin-userfront-formlist');
+  		
+  		laydate.render({
+  	      	elem: '#test-laydate-normal-cn',
+  	      	type: 'datetime'
+  	    });
+  		laydate.render({
+   	      	elem: '#test-laydate-normal-cn2',
+   	      	type: 'datetime'
+   	    });
+  		
+  
+  		//监听搜索
+  		form.on('submit(LAY-user-front-search)', function(data){
+    		var field = data.field;
+    		//执行重载
+    		table.reload('OM-order-list', {
+     	 		where: field
+    		});
+  		});
+
+  		//事件
+  		var active = {
+			batchdel: function(){
+      			var checkStatus = table.checkStatus('OM-order-list'),
+      			checkData = checkStatus.data; //得到选中的数据
+      			if(checkData.length === 0){
+        			return layer.msg('请选择数据');
+      			}
+
+      			//数据封装
+      			var val = '';
+      			for(var i=0; i < checkData.length; i++) {
+      				var obj =checkData[i];
+      				val = val + obj.id + ",";
+      			}
+      			var val = val.substring(0, val.length - 1);
+      			var req = {"ids": val};
+      			layer.confirm('确定删除吗？', function(index) {
+        			layer.close(index);
+	          		//执行 Ajax 后重载
+	          		$.ajax({
+						type: "POST",
+						url: "/manager/evaluate/deletes",
+						dataType:'json',//预期服务器返回的数据类型
+						contentType: "application/json; charset=utf-8",
+						async: false,
+						data: JSON.stringify(req),
+						success: function(data){
+							layer.open({
+	                  	      	content: data.desc,
+	                   	     	btn: ['确认'],
+	                   	     	yes: function(index, layero) {
+	                        		layer.close(index);
+	                        		table.reload('OM-order-list', null);
+	                        	}
+	                   	 	});
+						}, error: function(){
+							location.hash='/system/404';
+						}
+		    		});
+        		});
+      		}
+  		};
+  
+  		$('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+    		var type = $(this).data('type');
+    		active[type] ? active[type].call(this) : '';
+  		});
+	});
+</script>
